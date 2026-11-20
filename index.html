@@ -1,0 +1,1297 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pixel and Tech Studio – games, software and web design</title>
+<meta name="description" content="Pixel and Tech Studio is a game studio and software company. We make our own games and offer custom software, web design and AI call handling for businesses.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F6F7FC; --surface:#FFFFFF; --ink:#1B1A4B; --muted:#585A82; --line:#D9DCEE;
+  --magenta:#E4007C; --cyan:#00A9CE; --sun:#FFC72C;
+  --head:"Bricolage Grotesque","Trebuchet MS",system-ui,sans-serif;
+  --body:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
+  color-scheme: light;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#13122B; --surface:#1D1C42; --ink:#EEF0FF; --muted:#A9ACD6; --line:#34336A;
+    --magenta:#FF4DA6; --cyan:#35D0F0; --sun:#FFD25A;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#13122B; --surface:#1D1C42; --ink:#EEF0FF; --muted:#A9ACD6; --line:#34336A;
+  --magenta:#FF4DA6; --cyan:#35D0F0; --sun:#FFD25A;
+  color-scheme: dark;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-behavior:smooth;scroll-padding-top:calc(env(safe-area-inset-top,0px) + 76px);height:auto}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:1.0625rem;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+h1,h2,h3{font-family:var(--head);line-height:1.08;margin:0;letter-spacing:-0.02em}
+h1{font-size:clamp(2.6rem,6.4vw,4.9rem);font-weight:800}
+h2{font-size:clamp(1.9rem,3.8vw,2.9rem);font-weight:800}
+h3{font-size:1.3rem;font-weight:700;letter-spacing:-0.01em}
+p{margin:0}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--cyan);outline-offset:3px;border-radius:2px}
+.wrap{width:min(1120px,100% - 2.5rem);margin-inline:auto}
+section{padding:clamp(3.5rem,8vw,6.5rem) 0}
+.lede{color:var(--muted);max-width:56ch;margin-top:1rem}
+
+/* header */
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--bg);z-index:30}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);border-bottom:2px solid var(--ink)}
+.bar{display:flex;align-items:center;justify-content:space-between;gap:1rem;min-height:68px}
+.logo{display:flex;align-items:center;gap:.7rem;text-decoration:none;font-family:var(--head);font-weight:800;font-size:1.15rem;letter-spacing:-.01em}
+.logo-mark{display:grid;grid-template-columns:repeat(2,13px);gap:3px}
+.logo-mark i{display:block;width:13px;height:13px}
+.logo-mark i:nth-child(1){background:var(--magenta)}
+.logo-mark i:nth-child(2){background:var(--sun)}
+.logo-mark i:nth-child(3){background:var(--cyan)}
+.logo-mark i:nth-child(4){background:var(--ink)}
+.nav-right{display:flex;align-items:center;gap:.5rem}
+nav ul{display:flex;gap:.15rem;list-style:none;margin:0;padding:0;align-items:center}
+nav a{display:block;padding:.5rem .8rem;text-decoration:none;font-weight:500;border-bottom:3px solid transparent}
+nav a:hover{border-bottom-color:var(--magenta)}
+.icon-btn{background:none;border:2px solid var(--ink);color:var(--ink);font:600 .9rem var(--body);padding:.4rem .7rem;cursor:pointer}
+.icon-btn:hover{background:var(--sun);color:#1B1A4B}
+.menu-btn{display:none}
+
+.btn{display:inline-block;font:600 1rem var(--body);padding:.8rem 1.35rem;border:2px solid var(--ink);background:var(--ink);color:var(--bg);text-decoration:none;cursor:pointer;border-radius:0;box-shadow:4px 4px 0 var(--magenta);transition:transform .12s,box-shadow .12s}
+.btn:hover{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--magenta)}
+.btn:active{transform:translate(4px,4px);box-shadow:0 0 0 var(--magenta)}
+.btn.ghost{background:transparent;color:var(--ink);box-shadow:4px 4px 0 var(--cyan)}
+.btn.ghost:hover{box-shadow:2px 2px 0 var(--cyan)}
+.btn[disabled]{opacity:.55;cursor:not-allowed;box-shadow:none;transform:none}
+
+/* hero */
+.hero{position:relative;padding-top:clamp(2.5rem,6vw,4.5rem);padding-bottom:clamp(3rem,6vw,5rem)}
+.hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(2rem,5vw,4rem);align-items:center;position:relative}
+.hero p.lede{font-size:1.2rem}
+.cta-row{display:flex;flex-wrap:wrap;gap:1rem;margin-top:2rem}
+.float{position:absolute;width:var(--s);height:var(--s);background:var(--c);animation:bob 4s ease-in-out infinite;animation-delay:var(--d);pointer-events:none}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+.paint{background:var(--surface);border:2px solid var(--ink);padding:1rem;box-shadow:8px 8px 0 var(--sun);position:relative}
+#grid{display:block;width:100%;aspect-ratio:1;image-rendering:pixelated;touch-action:none;cursor:crosshair;background:var(--bg)}
+.paint-tools{display:flex;align-items:center;gap:.5rem;margin-top:.9rem;flex-wrap:wrap}
+.paint-tools p{font-size:.9rem;color:var(--muted);margin-right:auto}
+.sw{width:28px;height:28px;border:2px solid var(--ink);cursor:pointer;padding:0}
+.sw[aria-pressed="true"]{outline:3px solid var(--ink);outline-offset:2px}
+.mini{font:500 .85rem var(--body);background:none;border:2px solid var(--line);color:var(--ink);padding:.3rem .6rem;cursor:pointer}
+.mini:hover{border-color:var(--ink)}
+
+/* ticker */
+.ticker{background:var(--sun);color:#1B1A4B;border-block:2px solid var(--ink);overflow:hidden;white-space:nowrap}
+.ticker-track{display:inline-flex;animation:slide 32s linear infinite}
+.ticker span{display:inline-flex;align-items:center;gap:1.5rem;padding:.9rem 0 .9rem 1.5rem;font:700 1.25rem var(--head)}
+.ticker i{display:inline-block;width:12px;height:12px;background:#1B1A4B}
+.ticker i:nth-of-type(2n){background:#E4007C}
+@keyframes slide{to{transform:translateX(-50%)}}
+
+/* games */
+.games{background:var(--surface);border-bottom:2px solid var(--ink)}
+.games-top{display:grid;grid-template-columns:1fr 1fr;gap:clamp(2rem,5vw,4rem);align-items:center}
+.cabinet{background:var(--ink);padding:1rem;border:2px solid var(--ink);box-shadow:8px 8px 0 var(--magenta);max-width:420px;width:100%;justify-self:center}
+.screen{position:relative;background:var(--bg)}
+#game{display:block;width:100%;aspect-ratio:3/4;touch-action:none;cursor:none;outline-offset:-3px}
+.overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.9rem;text-align:center;background:color-mix(in srgb,var(--bg) 88%,transparent);padding:1.5rem}
+.overlay[hidden]{display:none}
+.overlay h3{font-size:1.8rem}
+.overlay p{color:var(--muted);font-size:.95rem;max-width:26ch}
+.key-hints{display:flex;gap:1rem;flex-wrap:wrap;margin-top:1.5rem;color:var(--muted);font-size:.95rem}
+.legend{display:grid;gap:.6rem;margin-top:1.5rem}
+.legend div{display:flex;align-items:center;gap:.75rem}
+.legend i{width:18px;height:18px;flex:none;display:block}
+.cards-title{margin-top:clamp(3rem,6vw,4.5rem)}
+
+/* cards for software */
+.lib-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.75rem;margin-top:2rem}
+.app{background:var(--bg);border:2px solid var(--ink);display:flex;flex-direction:column;box-shadow:6px 6px 0 var(--c,var(--cyan));transition:transform .15s,box-shadow .15s}
+.app:hover{transform:translate(-2px,-2px);box-shadow:9px 9px 0 var(--c,var(--cyan))}
+.app:nth-child(3n+1){--c:var(--magenta)}.app:nth-child(3n+2){--c:var(--cyan)}.app:nth-child(3n+3){--c:var(--sun)}
+.app-top{display:flex;gap:1rem;align-items:center;padding:1.25rem 1.25rem 0}
+.icon{width:64px;height:64px;flex:none;border:2px solid var(--ink)}
+.app-top small{display:block;color:var(--muted);font-size:.9rem}
+.app p.desc{padding:1rem 1.25rem;color:var(--muted);flex:1}
+.app-foot{display:flex;justify-content:space-between;align-items:center;gap:.75rem;padding:1rem 1.25rem;border-top:2px solid var(--ink);flex-wrap:wrap}
+.app-foot span{font-size:.9rem;color:var(--muted)}
+.app-foot .btn{padding:.55rem 1rem;font-size:.95rem;box-shadow:3px 3px 0 var(--cyan)}
+
+/* services */
+.svc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:2rem;margin-top:3rem}
+.svc{background:var(--surface);border:2px solid var(--ink);padding:1.5rem;box-shadow:6px 6px 0 var(--c);transition:transform .15s,box-shadow .15s}
+.svc:hover{transform:translate(-2px,-2px);box-shadow:9px 9px 0 var(--c)}
+.svc:nth-child(1){--c:var(--magenta)}.svc:nth-child(2){--c:var(--cyan)}.svc:nth-child(3){--c:var(--sun)}.svc:nth-child(4){--c:var(--ink)}
+.svc svg{width:64px;height:auto;display:block;margin-bottom:1.1rem;shape-rendering:crispEdges}
+.svc svg .a{fill:var(--c)}
+.svc svg .b{fill:var(--ink)}
+.svc p{color:var(--muted);margin-top:.6rem}
+
+/* AI demo */
+.ai{background:var(--surface);border-block:2px solid var(--ink)}
+.ai-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(2rem,5vw,4rem);align-items:center}
+.ticks{list-style:none;margin:1.75rem 0 0;padding:0;display:grid;gap:.8rem}
+.ticks li{display:flex;gap:.8rem;align-items:flex-start}
+.ticks li::before{content:"";flex:none;width:14px;height:14px;margin-top:.45rem;background:var(--cyan);box-shadow:4px 4px 0 var(--magenta)}
+.phone{background:var(--bg);border:2px solid var(--ink);box-shadow:8px 8px 0 var(--cyan);max-width:440px;width:100%;justify-self:center}
+.phone-head{display:flex;justify-content:space-between;align-items:center;padding:.8rem 1rem;border-bottom:2px solid var(--ink);background:var(--ink);color:var(--bg);font-weight:600}
+.phone-head small{font-weight:400;opacity:.8}
+.chat{padding:1rem;display:flex;flex-direction:column;gap:.6rem;min-height:340px}
+.msg{max-width:84%;padding:.6rem .85rem;font-size:.97rem;line-height:1.45;border:2px solid var(--ink)}
+.msg.ai-m{background:var(--surface);align-self:flex-start}
+.msg.caller{background:var(--sun);color:#1B1A4B;align-self:flex-end}
+.msg.sum{align-self:stretch;max-width:none;background:var(--cyan);color:#1B1A4B;font-weight:600}
+.msg small{display:block;font-weight:500;opacity:.75;margin-bottom:.15rem}
+.phone-foot{padding:.9rem 1rem;border-top:2px solid var(--ink);display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap}
+.phone-foot span{color:var(--muted);font-size:.9rem}
+
+/* library */
+.lib-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:1.5rem}
+.tools{display:flex;gap:.75rem;flex-wrap:wrap;align-items:center}
+.filters{display:flex;gap:.5rem;flex-wrap:wrap}
+.chip{font:600 .95rem var(--body);padding:.45rem 1rem;border:2px solid var(--ink);background:transparent;color:var(--ink);cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.search{width:200px;padding:.5rem .8rem;font:400 .95rem var(--body);border:2px solid var(--ink);background:var(--surface);color:var(--ink);border-radius:0}
+.empty{margin-top:2rem;color:var(--muted)}
+
+/* process */
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:0;margin-top:3rem;border:2px solid var(--ink);background:var(--surface)}
+.step{padding:1.5rem;border-right:2px solid var(--ink)}
+.step:last-child{border-right:0}
+.step b{display:grid;place-items:center;width:40px;height:40px;background:var(--c);color:#1B1A4B;font:800 1.2rem var(--head);border:2px solid var(--ink);margin-bottom:1rem}
+.step:nth-child(1){--c:var(--magenta)}.step:nth-child(2){--c:var(--cyan)}.step:nth-child(3){--c:var(--sun)}.step:nth-child(4){--c:var(--surface)}
+.step p{color:var(--muted);margin-top:.5rem}
+
+/* about */
+.about{background:#00A9CE;color:#1B1A4B;border-block:2px solid var(--ink)}
+.about h2,.about h3{color:#1B1A4B}
+.about .lede{color:#1B1A4B}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(2rem,5vw,4rem);align-items:start}
+.facts{display:grid;gap:1.25rem}
+.fact{border-left:6px solid var(--c);padding-left:1rem}
+.fact:nth-child(1){--c:#1B1A4B}.fact:nth-child(2){--c:#FFFFFF}.fact:nth-child(3){--c:#FFC72C}
+.fact p{color:#1B1A4B;margin-top:.25rem}
+
+[hidden]{display:none!important}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* wipe transition */
+.wipe{position:fixed;inset:0;z-index:90;display:grid;grid-template-columns:repeat(8,1fr);pointer-events:none}
+.wipe i{display:block;background:var(--c);transform:scaleY(0);transform-origin:top}
+.wipe i:nth-child(4n+1){--c:var(--magenta)}.wipe i:nth-child(4n+2){--c:var(--sun)}.wipe i:nth-child(4n+3){--c:var(--cyan)}.wipe i:nth-child(4n+4){--c:var(--ink)}
+.wipe.go i{animation:wipe .75s cubic-bezier(.65,0,.35,1) forwards;animation-delay:calc(var(--k) * .02s)}
+@keyframes wipe{0%{transform:scaleY(0);transform-origin:top}45%{transform:scaleY(1);transform-origin:top}55%{transform:scaleY(1);transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+
+/* product pages */
+.page-wrap.wide{width:min(1000px,100% - 2.5rem)}
+.page .app p{margin-top:0;max-width:none}
+.app h3 .title-link{text-decoration:none}
+.app h3 .title-link:hover{text-decoration:underline;text-decoration-color:var(--magenta);text-decoration-thickness:3px;text-underline-offset:4px}
+.acts{display:flex;gap:.6rem;flex-wrap:wrap}
+.app-foot .btn.sm{padding:.55rem 1rem;font-size:.95rem}
+.app-foot .btn.ghost.sm{box-shadow:3px 3px 0 var(--sun)}
+.app-hero{display:flex;gap:1.5rem;align-items:center;margin-top:.5rem}
+.app-hero .icon{width:96px;height:96px}
+.tags{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.75rem}
+.tag{border:2px solid var(--ink);padding:.15rem .7rem;font-size:.9rem;font-weight:600;background:var(--surface)}
+.app-cols{display:grid;grid-template-columns:1.4fr .8fr;gap:2.5rem;margin-top:2rem;align-items:start}
+.app-long{font-size:1.15rem}
+.get-box{border:2px solid var(--ink);background:var(--surface);padding:1.25rem;box-shadow:6px 6px 0 var(--magenta)}
+.get-box h3{margin-bottom:1rem}
+.get-box dl{display:grid;grid-template-columns:max-content 1fr;gap:.5rem 1rem;margin:1.25rem 0 0;font-size:.95rem}
+.get-box dt{font-weight:700}
+.get-box dd{margin:0;color:var(--muted)}
+.get-box .btn{display:block;text-align:center;width:100%}
+.get-box .dc-note{margin-top:1.1rem;font-size:.95rem;color:var(--muted)}
+.get-box .dc-note a{text-underline-offset:3px;text-decoration-color:var(--magenta);text-decoration-thickness:2px}
+.icon-btn.dc{background:var(--sun);color:#1B1A4B;text-decoration:none;display:inline-block}
+.icon-btn.dc:hover{background:#FFFFFF}
+[data-discord][aria-disabled="true"]{opacity:.65;cursor:not-allowed}
+.dc-box{--c:var(--cyan);display:flex;gap:1.5rem;align-items:center;flex-wrap:wrap;background:var(--surface);border:2px solid var(--ink);box-shadow:8px 8px 0 var(--cyan);padding:1.75rem}
+.dc-box svg{width:72px;height:auto;display:block;shape-rendering:crispEdges}
+.dc-box svg .a{fill:var(--c)}
+.dc-box svg .b{fill:var(--ink)}
+.dc-box > div{flex:1 1 280px}
+.dc-box h2{font-size:clamp(1.5rem,3vw,2rem)}
+.dc-box p{color:var(--muted);margin-top:.5rem}
+@media (max-width:560px){.icon-btn.dc{display:none}}
+.get-box .price{font:800 1.8rem var(--head);margin:0 0 1rem}
+.get-box .acts-col{display:grid;gap:.9rem}
+.carousel{margin-top:2rem}
+.carousel:focus-visible{outline-offset:6px}
+.stage{position:relative;aspect-ratio:16/9;background:var(--ink);border:2px solid var(--ink);box-shadow:6px 6px 0 var(--cyan);overflow:hidden;touch-action:pan-y}
+.slide{position:absolute;inset:0;background:#1B1A4B}
+.slide img,.slide video,.slide svg{width:100%;height:100%;object-fit:cover;display:block}
+.play{position:absolute;inset:0;display:grid;place-items:center}
+.play b{width:76px;height:76px;background:#FFC72C;border:2px solid #1B1A4B;display:grid;place-items:center;box-shadow:4px 4px 0 #E4007C}
+.play b::after{content:"";border-left:24px solid #1B1A4B;border-top:15px solid transparent;border-bottom:15px solid transparent;margin-left:7px}
+.car-btn{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;border:2px solid #1B1A4B;background:#FFC72C;color:#1B1A4B;font:800 1.5rem/1 var(--head);cursor:pointer;z-index:2;padding:0}
+.car-btn:hover{background:#FFFFFF}
+.car-btn.prev{left:.75rem}
+.car-btn.next{right:.75rem}
+.car-bar{display:flex;justify-content:space-between;gap:1rem;margin-top:1rem;color:var(--muted);font-size:.95rem}
+.thumbs{display:flex;gap:.6rem;margin-top:.5rem;overflow-x:auto;padding:.25rem .25rem .6rem}
+.thumb{flex:none;position:relative;width:112px;aspect-ratio:16/9;padding:0;border:2px solid var(--line);background:#1B1A4B;cursor:pointer;overflow:hidden}
+.thumb:hover{border-color:var(--ink)}
+.thumb[aria-current="true"]{border-color:var(--magenta);outline:2px solid var(--magenta);outline-offset:1px}
+.thumb img,.thumb svg{width:100%;height:100%;object-fit:cover;display:block}
+.thumb .vb{position:absolute;right:4px;bottom:4px;width:20px;height:20px;background:#FFC72C;border:2px solid #1B1A4B;display:grid;place-items:center}
+.thumb .vb::after{content:"";border-left:6px solid #1B1A4B;border-top:4px solid transparent;border-bottom:4px solid transparent;margin-left:2px}
+
+/* loader */
+.loader{position:fixed;inset:0;z-index:100;background:var(--bg);display:grid;place-content:center;justify-items:center;gap:1.75rem;animation:loaderOut .3s ease 1s forwards}
+.loader .lm{display:grid;grid-template-columns:repeat(2,34px);gap:8px}
+.loader .lm i{display:block;width:34px;height:34px;transform:scale(0);animation:pop .3s cubic-bezier(.3,1.6,.5,1) forwards}
+.loader .lm i:nth-child(1){background:var(--magenta);animation-delay:.05s}
+.loader .lm i:nth-child(2){background:var(--sun);animation-delay:.15s}
+.loader .lm i:nth-child(3){background:var(--cyan);animation-delay:.25s}
+.loader .lm i:nth-child(4){background:var(--ink);animation-delay:.35s}
+.loader .bar{display:flex;gap:4px}
+.loader .bar b{display:block;width:14px;height:14px;background:var(--line);animation:fillpx .15s forwards;animation-delay:calc(.3s + var(--i) * .07s)}
+.loader p{font:800 1.3rem var(--head);letter-spacing:-.01em}
+@keyframes pop{to{transform:scale(1)}}
+@keyframes fillpx{to{background:var(--magenta)}}
+@keyframes loaderOut{to{opacity:0;visibility:hidden}}
+
+/* pages and tiles */
+main.pg-in{animation:pgin .35s ease}
+@keyframes pgin{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+nav a[aria-current="page"]{border-bottom-color:var(--magenta)}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.75rem;margin-top:2rem}
+.tile{display:block;text-decoration:none;background:var(--surface);border:2px solid var(--ink);padding:1.5rem;box-shadow:6px 6px 0 var(--c);transition:transform .15s,box-shadow .15s}
+.tile:hover{transform:translate(-2px,-2px);box-shadow:9px 9px 0 var(--c)}
+.tile p{color:var(--muted);margin-top:.5rem}
+
+/* newsletter */
+.news{background:var(--sun);color:#1B1A4B;border-top:2px solid var(--ink);padding:clamp(2.5rem,6vw,4rem) 0}
+.news-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:2rem;align-items:center}
+.news .lede{color:#1B1A4B}
+.nl-form{display:flex;flex-wrap:wrap;gap:.75rem;background:transparent;border:0;box-shadow:none;padding:0}
+.nl-form input{flex:1 1 220px;width:auto;border-color:#1B1A4B;background:#FFFFFF;color:#1B1A4B}
+.nl-form .form-note{flex-basis:100%;color:#1B1A4B}
+.nl-form .form-note a{text-underline-offset:3px}
+
+/* leaderboard */
+.board{margin-top:1.25rem;border:2px solid var(--ink);background:var(--bg);padding:.6rem .85rem;box-shadow:4px 4px 0 var(--sun);max-width:260px;font-size:.9rem}
+.board h3{font-size:1rem}
+.board ol{list-style:none;margin:.4rem 0 0;padding:0}
+.board li{display:flex;justify-content:space-between;gap:1rem;padding:.15rem 0;border-bottom:1px dashed var(--line)}
+.board li:last-child{border-bottom:0}
+.board li.none{color:var(--muted)}
+.name-row{display:flex;gap:.5rem;width:100%;max-width:320px}
+.name-row input{flex:1;min-width:0}
+.name-row .btn{padding:.5rem .9rem;font-size:.95rem;box-shadow:3px 3px 0 var(--cyan)}
+
+/* policy and press pages */
+.page{padding:clamp(2.5rem,6vw,4.5rem) 0 clamp(3.5rem,8vw,6rem)}
+.page-wrap{width:min(820px,100% - 2.5rem);margin-inline:auto}
+.page h1{font-size:clamp(2.2rem,5vw,3.4rem)}
+.page h2{font-size:1.5rem;margin-top:2.5rem}
+.page p,.page li{max-width:68ch;margin-top:.8rem}
+.page ul{padding-left:1.25rem;margin:0}
+.page .back{display:inline-block;margin-bottom:1.5rem;font-weight:600;text-underline-offset:4px;text-decoration-color:var(--magenta);text-decoration-thickness:3px}
+.page .updated{color:var(--muted)}
+.boiler{padding:1rem 1.25rem;border-left:6px solid var(--magenta);background:var(--surface)}
+.facts-dl{display:grid;grid-template-columns:max-content 1fr;gap:.7rem 1.5rem;margin:1rem 0 0;border:2px solid var(--ink);background:var(--surface);padding:1rem 1.25rem}
+.facts-dl dt{font-weight:700}
+.facts-dl dd{margin:0}
+.logos{display:flex;gap:1rem;flex-wrap:wrap;margin-top:1rem}
+.logo-box{width:150px;height:150px;display:grid;place-items:center;border:2px solid var(--ink)}
+.logo-box svg{width:80px;height:80px;display:block}
+.dl-row{display:flex;gap:.75rem;flex-wrap:wrap;margin-top:1.25rem}
+.sw-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:1rem;margin-top:1rem}
+.cw{border:2px solid var(--ink);background:var(--surface)}
+.cw .col{height:72px;border-bottom:2px solid var(--ink)}
+.cw .t{padding:.6rem .75rem;font-size:.9rem;display:grid;gap:.4rem;justify-items:start}
+.cw .t b{font-family:var(--head);font-size:1rem}
+@media (max-width:560px){.facts-dl{grid-template-columns:1fr}}
+
+/* hiring */
+.hiring-note{display:inline-block;margin-top:1.5rem;padding:.6rem 1rem;border:2px solid var(--ink);background:var(--sun);color:#1B1A4B;font-weight:600;box-shadow:4px 4px 0 var(--magenta)}
+
+/* faq */
+.faq-list{margin-top:2.5rem;max-width:780px;border-top:2px solid var(--ink)}
+details{border-bottom:2px solid var(--ink)}
+summary{cursor:pointer;list-style:none;padding:1.15rem 0;font:700 1.2rem var(--head);display:flex;justify-content:space-between;gap:1rem}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";font-size:1.5rem;line-height:1;color:var(--magenta)}
+details[open] summary::after{content:"\2212"}
+details p{padding:0 0 1.25rem;color:var(--muted);max-width:62ch}
+
+/* contact */
+.contact{background:var(--surface);border-top:2px solid var(--ink)}
+.contact-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(2rem,5vw,4rem)}
+.mail{display:inline-block;margin-top:1.5rem;font:700 1.25rem var(--head);text-decoration-thickness:3px;text-underline-offset:5px;text-decoration-color:var(--magenta);word-break:break-all}
+form{display:grid;gap:1.1rem;background:var(--bg);border:2px solid var(--ink);padding:1.5rem;box-shadow:8px 8px 0 var(--cyan)}
+label{display:grid;gap:.35rem;font-weight:600;font-size:.95rem}
+input,select,textarea{font:400 1rem var(--body);padding:.7rem .8rem;border:2px solid var(--line);background:var(--surface);color:var(--ink);border-radius:0;width:100%}
+input:focus,select:focus,textarea:focus{border-color:var(--ink);outline:none}
+textarea{min-height:130px;resize:vertical}
+.form-note{font-size:.9rem;color:var(--muted)}
+
+footer{background:#E4007C;color:#FFFFFF;border-top:2px solid var(--ink);padding:2.5rem 0;font-size:.95rem}
+footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:1.25rem;align-items:center}
+footer ul{display:flex;gap:1.25rem;list-style:none;margin:0;padding:0;flex-wrap:wrap}
+footer a{text-decoration:none}
+footer a:hover{text-decoration:underline;text-decoration-color:#FFC72C;text-decoration-thickness:2px;text-underline-offset:4px}
+
+@media (max-width:900px){
+  .hero-grid,.about-grid,.contact-grid,.games-top,.ai-grid,.news-grid,.app-cols{grid-template-columns:1fr}
+  .menu-btn{display:block}
+  nav{position:absolute;left:0;right:0;top:100%;background:var(--bg);border-bottom:2px solid var(--ink);display:none}
+  nav.open{display:block}
+  nav ul{flex-direction:column;align-items:stretch;padding:.5rem 1.25rem 1rem}
+  nav a{padding:.8rem .5rem}
+  .step{border-right:0;border-bottom:2px solid var(--ink)}
+  .step:last-child{border-bottom:0}
+  .float{display:none}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .btn,.app,.svc{transition:none}
+  .float,.ticker-track,main.pg-in{animation:none}
+  .tile{transition:none}
+  .loader{animation-delay:.2s}
+  .wipe{display:none}
+  .loader .lm i,.loader .bar b{animation-duration:.01s;animation-delay:0s}
+}
+</style>
+</head>
+<body>
+
+<div class="loader" id="loader" role="status" aria-label="Loading">
+  <div class="lm" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+  <div class="bar" aria-hidden="true"><b style="--i:0"></b><b style="--i:1"></b><b style="--i:2"></b><b style="--i:3"></b><b style="--i:4"></b><b style="--i:5"></b><b style="--i:6"></b><b style="--i:7"></b></div>
+  <p>Pixel and Tech Studio</p>
+</div>
+
+<div class="wipe" id="wipe" aria-hidden="true"><i style="--k:0"></i><i style="--k:1"></i><i style="--k:2"></i><i style="--k:3"></i><i style="--k:4"></i><i style="--k:5"></i><i style="--k:6"></i><i style="--k:7"></i></div>
+
+<header>
+  <div class="wrap bar">
+    <a class="logo" href="#top" aria-label="Pixel and Tech Studio home">
+      <span class="logo-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+      Pixel and Tech Studio
+    </a>
+    <div class="nav-right">
+      <nav id="nav" aria-label="Main">
+        <ul>
+          <li><a href="#games">Games</a></li>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#software">Software</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#hiring">Careers</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+      <a class="icon-btn dc" data-discord data-off="Discord soon">Join Discord</a>
+      <button class="icon-btn" id="themeBtn" type="button" aria-label="Switch between light and dark mode">Dark</button>
+      <button class="icon-btn menu-btn" id="menuBtn" type="button" aria-expanded="false" aria-controls="nav">Menu</button>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <span class="float" aria-hidden="true" style="--s:22px;--c:var(--magenta);--d:0s;left:3%;top:12%"></span>
+    <span class="float" aria-hidden="true" style="--s:14px;--c:var(--cyan);--d:1.2s;left:46%;top:6%"></span>
+    <span class="float" aria-hidden="true" style="--s:18px;--c:var(--sun);--d:2s;left:44%;bottom:6%"></span>
+    <div class="wrap hero-grid">
+      <div>
+        <h1>We build software for your business and make our own games.</h1>
+        <p class="lede">Pixel and Tech Studio is a small software company and game studio. Play our games, download our apps, or work with us on a website, an app or an AI receptionist.</p>
+        <div class="cta-row">
+          <a class="btn" href="#games">Play our games</a>
+          <a class="btn ghost" href="#contact">Start a project</a>
+        </div>
+      </div>
+      <div class="paint">
+        <canvas id="grid" width="480" height="480" aria-label="Pixel drawing pad. Click or drag to paint." role="img"></canvas>
+        <div class="paint-tools">
+          <p>Click and drag to paint.</p>
+          <span id="swatches" style="display:flex;gap:.4rem"></span>
+          <button class="mini" id="clearBtn" type="button">Clear</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="ticker" aria-hidden="true">
+    <div class="ticker-track" id="tickerTrack"></div>
+  </div>
+
+  <section id="tiles">
+    <div class="wrap">
+      <h2>Where would you like to go?</h2>
+      <div class="tiles">
+        <a class="tile" href="#games" style="--c:var(--magenta)"><h3>Games</h3><p>Play Pixel Catch and download our games.</p></a>
+        <a class="tile" href="#services" style="--c:var(--cyan)"><h3>Services</h3><p>Custom software, web design and AI call handling.</p></a>
+        <a class="tile" href="#software" style="--c:var(--sun)"><h3>Software library</h3><p>Browse and download everything we’ve released.</p></a>
+        <a class="tile" href="#about" style="--c:var(--ink)"><h3>About us</h3><p>Meet the studio and read our questions and answers.</p></a>
+        <a class="tile" href="#hiring" style="--c:var(--magenta)"><h3>Careers</h3><p>We’re not hiring yet, but we’d love to hear from you.</p></a>
+        <a class="tile" href="#contact" style="--c:var(--cyan)"><h3>Contact</h3><p>Tell us about your project.</p></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="games" id="games">
+    <div class="wrap">
+      <div class="games-top">
+        <div>
+          <h2>Our games</h2>
+          <p class="lede">We design and release our own games. Try a tiny one right here, then download the full games below.</p>
+          <div class="legend" aria-label="How to score">
+            <div><i style="background:var(--magenta)"></i> Catch pink pixels for 1 point</div>
+            <div><i style="background:var(--sun)"></i> Catch gold pixels for 3 points</div>
+            <div><i style="background:var(--ink);box-shadow:inset 0 0 0 4px var(--bg)"></i> Dodge the bugs, you only have 3 lives</div>
+          </div>
+          <p class="key-hints">Move with your mouse or finger, or use the left and right arrow keys.</p>
+          <div class="board">
+            <h3>Your top scores</h3>
+            <ol id="scores"></ol>
+          </div>
+        </div>
+        <div class="cabinet">
+          <div class="screen">
+            <canvas id="game" width="360" height="480" tabindex="0" aria-label="Pixel Catch mini game"></canvas>
+            <div class="overlay" id="overlay">
+              <h3 id="ovTitle">Pixel Catch</h3>
+              <p id="ovText">Catch the falling pixels and dodge the bugs.</p>
+              <div class="name-row" id="nameRow" hidden>
+                <input id="nameIn" maxlength="12" placeholder="Your name" aria-label="Your name for the scoreboard">
+                <button class="btn" id="saveScore" type="button">Save score</button>
+              </div>
+              <button class="btn" id="playBtn" type="button">Play</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <h3 class="cards-title">Games you can download</h3>
+      <div class="lib-grid" id="gameList"></div>
+    </div>
+  </section>
+
+  <section id="community" style="padding-top:0">
+    <div class="wrap">
+      <div class="dc-box">
+        <div data-icon="chat"></div>
+        <div>
+          <h2>Join our Discord</h2>
+          <p>Chat with the team and other players, share feedback and hear about new games first.</p>
+        </div>
+        <a class="btn" data-discord data-off="Discord link coming soon">Join our Discord</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="services">
+    <div class="wrap">
+      <h2>What we do for businesses</h2>
+      <p class="lede">We build software, websites and AI call handling for other businesses, and we look after it after launch.</p>
+      <div class="svc-grid">
+        <div class="svc">
+          <div data-icon="app"></div>
+          <h3>Custom software and apps</h3>
+          <p>Desktop, web and mobile tools built around how your business works, from internal dashboards to customer-facing apps.</p>
+        </div>
+        <div class="svc">
+          <div data-icon="web"></div>
+          <h3>Web design</h3>
+          <p>Fast, clear websites that look right on every screen and are easy for you to update.</p>
+        </div>
+        <div class="svc">
+          <div data-icon="call"></div>
+          <h3>AI call handling</h3>
+          <p>An AI receptionist that answers calls, takes messages, books appointments and passes urgent calls to you.</p>
+        </div>
+        <div class="svc">
+          <div data-icon="game"></div>
+          <h3>Our own games</h3>
+          <p>We also make and release original games for PC and mobile. They’re how we try out new ideas.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="ai" id="ai">
+    <div class="wrap ai-grid">
+      <div>
+        <h2>An AI receptionist that never misses a call</h2>
+        <p class="lede">Our call handling app answers your phone in a natural voice, so customers get help straight away, even when you’re busy or closed.</p>
+        <ul class="ticks">
+          <li>Answers every call, day or night</li>
+          <li>Books appointments straight into your calendar</li>
+          <li>Texts or emails you a summary of each call</li>
+          <li>Passes urgent calls to you or your team</li>
+        </ul>
+      </div>
+      <div class="phone">
+        <div class="phone-head"><span>Example call</span><small id="callState">Ready</small></div>
+        <div class="chat" id="chat" aria-live="polite"></div>
+        <div class="phone-foot">
+          <span>A made-up call for a plumber.</span>
+          <button class="btn" id="callBtn" type="button">Play demo call</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="software">
+    <div class="wrap">
+      <div class="lib-head">
+        <div>
+          <h2>Software library</h2>
+          <p class="lede">Everything we’ve released, free to download and use.</p>
+        </div>
+        <div class="tools">
+          <input class="search" id="search" type="search" placeholder="Search software" aria-label="Search software">
+          <div class="filters" role="group" aria-label="Filter software">
+            <button class="chip" data-f="all" aria-pressed="true">All</button>
+            <button class="chip" data-f="Game" aria-pressed="false">Games</button>
+            <button class="chip" data-f="App" aria-pressed="false">Apps</button>
+            <button class="chip" data-f="Tool" aria-pressed="false">Tools</button>
+          </div>
+        </div>
+      </div>
+      <div class="lib-grid" id="lib"></div>
+      <p class="empty" id="empty" hidden>Nothing matches your search yet.</p>
+    </div>
+  </section>
+
+  <section id="process" style="padding-top:0">
+    <div class="wrap">
+      <h2>How a project works</h2>
+      <p class="lede">Four steps, and you know what’s happening at each one.</p>
+      <div class="steps">
+        <div class="step"><b>1</b><h3>Talk</h3><p>Tell us what you need. We ask questions and listen.</p></div>
+        <div class="step"><b>2</b><h3>Plan</h3><p>You get a written plan with the scope, timing and price.</p></div>
+        <div class="step"><b>3</b><h3>Build</h3><p>We build it and show you progress along the way.</p></div>
+        <div class="step"><b>4</b><h3>Launch and support</h3><p>We launch it, then fix bugs and make changes as you need them.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="about" id="about">
+    <div class="wrap about-grid">
+      <div>
+        <h2>A small studio that ships</h2>
+        <p class="lede">We’re a startup, so you work directly with the people building your product. No account managers, no hand-offs, and no jargon when we explain what we’re doing.</p>
+      </div>
+      <div class="facts">
+        <div class="fact"><h3>We make our own products</h3><p>Our games and apps are how we test ideas, so we know what works before we build it for you.</p></div>
+        <div class="fact"><h3>Clear scope and pricing</h3><p>You get a written plan, a fixed price or estimate, and regular updates while we build.</p></div>
+        <div class="fact"><h3>Support after launch</h3><p>We fix bugs, make changes and keep things running once your project is live.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="hiring">
+    <div class="wrap contact-grid">
+      <div>
+        <h2>Join our team</h2>
+        <p class="lede">We always love having like-minded people on our team. We’re not hiring right now, but if you’d like to work with us, leave your name and email below and tell us a little about yourself. We’ll see what we can do.</p>
+        <p class="hiring-note">Based in Newcastle upon Tyne</p>
+      </div>
+      <form id="joinForm">
+        <label>Your name<input name="name" required autocomplete="name"></label>
+        <label>Your email<input name="email" type="email" required autocomplete="email"></label>
+        <label>What do you do?<input name="role" placeholder="For example: game artist, developer, designer"></label>
+        <label>About you<textarea name="msg" required></textarea></label>
+        <button class="btn" type="submit">Get in touch</button>
+        <p class="form-note">This opens your email app with the message ready to send to us.</p>
+      </form>
+    </div>
+  </section>
+
+  <section id="faq">
+    <div class="wrap">
+      <h2>Questions people ask</h2>
+      <div class="faq-list">
+        <details><summary>How do I download your software?</summary><p>Open the software library, choose a game, app or tool, and press Download. Each card shows which devices it works on and how big the file is.</p></details>
+        <details><summary>Do you make games for other people?</summary><p>No. We make and release our own games. For businesses we build custom software, websites and AI call handling.</p></details>
+        <details><summary>How much does a project cost?</summary><p>It depends on what you need. Send us a few details and we’ll reply with a written estimate before any work starts.</p></details>
+        <details><summary>How does AI call handling work?</summary><p>Your calls are answered by an AI that follows the instructions you give it. It can take messages, book appointments and pass urgent calls to you, then send you a summary.</p></details>
+      </div>
+    </div>
+  </section>
+
+  <section class="news" id="news">
+    <div class="wrap news-grid">
+      <div>
+        <h2>Get news about new games</h2>
+        <p class="lede">Join our newsletter for new game releases, software updates and studio news. We’ll only email you about what we make.</p>
+      </div>
+      <form class="nl-form" id="newsForm">
+        <label class="sr" for="nlEmail">Your email</label>
+        <input id="nlEmail" name="email" type="email" required placeholder="Your email address" autocomplete="email">
+        <button class="btn" type="submit">Subscribe</button>
+        <p class="form-note">This opens your email app with a sign-up message for you to send us. Read our <a href="#privacy">privacy policy</a>.</p>
+      </form>
+    </div>
+  </section>
+
+  <section class="contact" id="contact">
+    <div class="wrap contact-grid">
+      <div>
+        <h2>Tell us what you’re building</h2>
+        <p class="lede">Send a few lines about your project and we’ll reply with questions, ideas and a rough idea of cost and timing.</p>
+        <a class="mail" href="mailto:pixelandtech.uk@gmail.com">pixelandtech.uk@gmail.com</a>
+        <p class="lede" style="margin-top:1rem">Based in Newcastle upon Tyne, UK.</p>
+      </div>
+      <form id="form">
+        <label>Your name<input name="name" required autocomplete="name"></label>
+        <label>Your email<input name="email" type="email" required autocomplete="email"></label>
+        <label>What do you need?
+          <select name="service">
+            <option>Custom software or an app</option>
+            <option>A website</option>
+            <option>AI call handling</option>
+            <option>Something else</option>
+          </select>
+        </label>
+        <label>Project details<textarea name="msg" required></textarea></label>
+        <button class="btn" type="submit">Send message</button>
+        <p class="form-note">This opens your email app with the message ready to send to us.</p>
+      </form>
+    </div>
+  </section>
+</main>
+
+<div class="page" id="viewApp" hidden>
+  <div class="page-wrap wide" id="appBody"></div>
+</div>
+
+<div class="page" id="viewPrivacy" hidden>
+  <div class="page-wrap">
+    <a class="back" href="#top">Back to home</a>
+    <h1>Privacy policy</h1>
+    <p class="updated">Last updated: 20 November 2026</p>
+    <p>Pixel and Tech Studio (“we”, “us”) is based in Newcastle upon Tyne, UK. This policy explains what personal information we collect through this website, why we collect it and what your rights are. You can contact us at <a href="mailto:pixelandtech.uk@gmail.com">pixelandtech.uk@gmail.com</a>.</p>
+
+    <h2>What we collect</h2>
+    <p>This website has no user accounts, and we don’t ask for personal details to browse it or download our software. We only receive personal information when you choose to send it to us:</p>
+    <ul>
+      <li>Contact form: your name, email address, the service you’re interested in and your message.</li>
+      <li>Careers form: your name, email address, what you do and anything you tell us about yourself.</li>
+      <li>Newsletter: your email address.</li>
+    </ul>
+    <p>These forms open your email app, so the information reaches us as an ordinary email. We receive nothing unless you press send in your email app.</p>
+
+    <h2>How we use it</h2>
+    <ul>
+      <li>To reply to your enquiry and, if you hire us, to carry out the work.</li>
+      <li>To consider you for a role, if you contact us through the careers form.</li>
+      <li>To send you news about our games and software, only if you signed up to the newsletter.</li>
+    </ul>
+
+    <h2>Our legal basis</h2>
+    <p>For enquiries, we use your details because you asked us to get in touch and it’s in our legitimate interests to reply. For the newsletter and careers messages, we rely on your consent, which you can withdraw at any time by emailing us.</p>
+
+    <h2>How long we keep it</h2>
+    <p>We keep enquiries for as long as we need them to deal with your request and any project that follows. We keep newsletter addresses until you ask us to stop, and careers details for up to 12 months unless you ask us to delete them sooner.</p>
+
+    <h2>Who else can see it</h2>
+    <p>We don’t sell your information. Emails sent to us are handled by our email provider, Google (Gmail). We only share information with people who help us run the business, and only when they need it.</p>
+
+    <h2>Cookies and local storage</h2>
+    <p>We don’t use advertising or tracking cookies. The Pixel Catch game saves top scores and the name you enter in your own browser’s storage on your device. We never receive that information, and you can clear it in your browser settings.</p>
+
+    <h2>Other services</h2>
+    <p>This site loads fonts from Google Fonts, so Google receives your IP address when the page loads. The site is also hosted by a third party that may keep standard server logs. If a download button takes you to another website, that site’s own privacy policy applies.</p>
+
+    <h2>Your rights</h2>
+    <p>Under UK data protection law you can ask us to:</p>
+    <ul>
+      <li>tell you what personal information we hold about you,</li>
+      <li>correct anything that’s wrong,</li>
+      <li>delete your information,</li>
+      <li>stop using it, or limit how we use it.</li>
+    </ul>
+    <p>Email us and we’ll respond as soon as we can. If you’re unhappy with how we’ve handled your information, you can complain to the Information Commissioner’s Office at ico.org.uk.</p>
+
+    <h2>Changes to this policy</h2>
+    <p>If we change this policy, we’ll post the new version here and update the date at the top.</p>
+  </div>
+</div>
+
+<div class="page" id="viewPress" hidden>
+  <div class="page-wrap">
+    <a class="back" href="#top">Back to home</a>
+    <h1>Press kit</h1>
+    <p>Everything you need to write about Pixel and Tech Studio. For screenshots, game art, interviews or anything else, email <a href="mailto:pixelandtech.uk@gmail.com">pixelandtech.uk@gmail.com</a>.</p>
+
+    <h2>About us</h2>
+    <p class="boiler" id="boiler">Pixel and Tech Studio is a small game studio and software company based in Newcastle upon Tyne, UK. The studio makes and releases its own games and apps, and builds custom software, websites and AI call handling for businesses.</p>
+    <div class="dl-row"><button class="mini" type="button" data-copy-el="boiler">Copy description</button></div>
+
+    <h2>Quick facts</h2>
+    <dl class="facts-dl">
+      <dt>Name</dt><dd>Pixel and Tech Studio</dd>
+      <dt>Based in</dt><dd>Newcastle upon Tyne, UK</dd>
+      <dt>Our products</dt><dd>Original games and apps, free to download from our website</dd>
+      <dt>For businesses</dt><dd>Custom software and apps, web design, AI call handling</dd>
+      <dt>Press contact</dt><dd><a href="mailto:pixelandtech.uk@gmail.com">pixelandtech.uk@gmail.com</a></dd>
+    </dl>
+
+    <h2>Logo</h2>
+    <p>Our logo is four pixels in our brand colours.</p>
+    <div class="logos">
+      <div class="logo-box" style="background:#FFFFFF"><svg viewBox="0 0 29 29" shape-rendering="crispEdges" aria-label="Pixel and Tech Studio logo on a light background"><rect width="13" height="13" fill="#E4007C"/><rect x="16" width="13" height="13" fill="#FFC72C"/><rect y="16" width="13" height="13" fill="#00A9CE"/><rect x="16" y="16" width="13" height="13" fill="#1B1A4B"/></svg></div>
+      <div class="logo-box" style="background:#1B1A4B"><svg viewBox="0 0 29 29" shape-rendering="crispEdges" aria-label="Pixel and Tech Studio logo on a dark background"><rect width="13" height="13" fill="#E4007C"/><rect x="16" width="13" height="13" fill="#FFC72C"/><rect y="16" width="13" height="13" fill="#00A9CE"/><rect x="16" y="16" width="13" height="13" fill="#FFFFFF"/></svg></div>
+    </div>
+    <div class="dl-row">
+      <button class="btn" id="dlLogo" type="button" hidden>Download logo for light backgrounds</button>
+      <button class="btn ghost" id="dlLogoDark" type="button" hidden>Download logo for dark backgrounds</button>
+      <button class="btn ghost" id="dlFacts" type="button" hidden>Download fact sheet</button>
+    </div>
+
+    <h2>Colours</h2>
+    <div class="sw-grid">
+      <div class="cw"><div class="col" style="background:#E4007C"></div><div class="t"><b>Magenta</b>#E4007C<button class="mini" type="button" data-copy="#E4007C">Copy</button></div></div>
+      <div class="cw"><div class="col" style="background:#00A9CE"></div><div class="t"><b>Cyan</b>#00A9CE<button class="mini" type="button" data-copy="#00A9CE">Copy</button></div></div>
+      <div class="cw"><div class="col" style="background:#FFC72C"></div><div class="t"><b>Yellow</b>#FFC72C<button class="mini" type="button" data-copy="#FFC72C">Copy</button></div></div>
+      <div class="cw"><div class="col" style="background:#1B1A4B"></div><div class="t"><b>Navy</b>#1B1A4B<button class="mini" type="button" data-copy="#1B1A4B">Copy</button></div></div>
+      <div class="cw"><div class="col" style="background:#F6F7FC"></div><div class="t"><b>Paper</b>#F6F7FC<button class="mini" type="button" data-copy="#F6F7FC">Copy</button></div></div>
+    </div>
+
+    <h2>Fonts</h2>
+    <p>Headings use Bricolage Grotesque. Body text uses Figtree. Both are free on Google Fonts.</p>
+
+    <h2>Using our name and logo</h2>
+    <ul>
+      <li>Write our name as “Pixel and Tech Studio”.</li>
+      <li>Please don’t stretch, rotate or recolour the logo.</li>
+      <li>Give the logo some clear space around it.</li>
+    </ul>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <span>© <span id="yr">2026</span> Pixel and Tech Studio, Newcastle upon Tyne</span>
+    <ul>
+      <li><a href="#games">Games</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#software">Software</a></li>
+      <li><a href="#hiring">Careers</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li><a href="#press">Press kit</a></li>
+      <li><a data-discord data-off="Discord (soon)">Discord</a></li>
+      <li><a href="#privacy">Privacy policy</a></li>
+    </ul>
+    <a href="mailto:pixelandtech.uk@gmail.com">pixelandtech.uk@gmail.com</a>
+  </div>
+</footer>
+
+<script>
+/* ============ APPS: edit this list ============
+   Set `url` to a download link (a file or a store page).
+   While `url` is empty the button shows "Coming soon".
+   type must be "Game", "App" or "Tool".
+   kind is "download" (a file) or "web" (a web app or website that opens in a new tab).
+   long and features fill each item's own page. These are sample entries.
+   price is text such as "Free" or "£4.99".
+   buyUrl and wishlistUrl are links to a store page (Steam, itch.io, App Store, Google Play).
+   media is the carousel on the item's page. Leave it empty for placeholders, or list items like
+   { type:"image", src:"...", alt:"..." } and { type:"video", src:"...", poster:"..." }. */
+var APPS = [
+  { name:"Pixel Drift", type:"Game", kind:"download", platform:"Windows, Mac", version:"1.0", size:"84 MB", price:"£4.99",
+    desc:"A fast top-down racing game with short tracks and ghost replays of your best laps.",
+    long:"Pixel Drift is a fast top-down racer built around short tracks you can learn in a few laps. Race the clock, then race a ghost of your best run.",
+    features:["Short tracks that take under a minute to learn","Ghost replays of your best laps","Play with a keyboard or a game controller"],
+    url:"", buyUrl:"", wishlistUrl:"", media:[] },
+  { name:"Block Keeper", type:"Game", kind:"download", platform:"Android", version:"0.9", size:"46 MB", price:"Free",
+    desc:"A calm puzzle game where you build stable towers from oddly shaped blocks.",
+    long:"Block Keeper is a calm puzzle game about building towers that stay up. Drop oddly shaped blocks, keep the balance and see how high you can go.",
+    features:["Simple one-touch controls","A relaxed mode with no timer","New block shapes as your tower grows"],
+    url:"", buyUrl:"", wishlistUrl:"", media:[] },
+  { name:"Tidy Tasks", type:"App", kind:"download", platform:"Windows, Mac", version:"1.2", size:"32 MB", price:"Free",
+    desc:"A simple to-do app that sorts your day into what to do now, next and later.",
+    long:"Tidy Tasks is a simple to-do app. Add what you need to do and it sorts your day into now, next and later, so you always know where to start.",
+    features:["Sorts tasks into now, next and later","Quick add from the keyboard","Clean, distraction-free layout"],
+    url:"", buyUrl:"", wishlistUrl:"", media:[] },
+  { name:"CallPilot Demo", type:"App", kind:"web", platform:"Any browser", version:"0.5", size:"", price:"Free",
+    desc:"Try our AI call handler. It answers a test call, takes a message and books a slot.",
+    long:"Try our AI call handler without installing anything. Start a test call, leave a message and see how it books a slot and sends a summary to the team.",
+    features:["Runs in your browser, nothing to install","A test call for a made-up business","See the summary sent to the team"],
+    url:"", buyUrl:"", wishlistUrl:"", media:[] },
+  { name:"Sprite Sizer", type:"Tool", kind:"web", platform:"Any browser", version:"1.1", size:"", price:"Free",
+    desc:"Resize and tidy pixel art in a batch without blurring the edges.",
+    long:"Sprite Sizer resizes pixel art in whole batches while keeping every edge sharp, so your sprites look the same at any size.",
+    features:["Keeps pixel edges sharp when resizing","Resize many images at once","Works in any modern browser"],
+    url:"", buyUrl:"", wishlistUrl:"", media:[] },
+  { name:"Invoice Snap", type:"Tool", kind:"download", platform:"Windows", version:"1.0", size:"18 MB", price:"Free",
+    desc:"Turn a few typed lines into a clean PDF invoice you can send straight away.",
+    long:"Invoice Snap turns a few typed lines into a clean PDF invoice. Fill in who and what, and send it straight away.",
+    features:["Type a few lines, get a PDF invoice","Saves your business details for next time","Simple templates that look professional"],
+    url:"", buyUrl:"", wishlistUrl:"", media:[] }
+];
+
+/* Paste your Discord invite link between the quotes, for example "https://discord.gg/yourcode".
+   While it is empty the Discord buttons show as "coming soon". */
+var DISCORD_URL="";
+function wireDiscord(root){
+  (root||document).querySelectorAll('[data-discord]').forEach(function(a){
+    if(DISCORD_URL){a.href=DISCORD_URL;a.target='_blank';a.rel='noopener';a.removeAttribute('aria-disabled')}
+    else{a.removeAttribute('href');a.setAttribute('aria-disabled','true');a.title='Invite link coming soon';a.textContent=a.dataset.off||'Discord link coming soon'}
+  });
+}
+function cssVar(n){return getComputedStyle(document.documentElement).getPropertyValue(n).trim()}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+var reduce=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/* ---- ticker ---- */
+(function(){
+  var words=["Games","Apps","Web design","AI call handling","Custom software"],h="";
+  for(var r=0;r<2;r++)for(var k=0;k<3;k++)words.forEach(function(w){h+="<span>"+w+"<i></i></span>"});
+  document.getElementById("tickerTrack").innerHTML=h;
+})();
+
+/* ---- software cards ---- */
+var PAL=["#E4007C","#00A9CE","#FFC72C","#1B1A4B"];
+function hash(s){var h=2166136261;for(var i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)}return h>>>0}
+function iconSVG(name){
+  var h=hash(name),c1=PAL[h%3],c2=PAL[(h>>3)%4];if(c2===c1)c2=PAL[3];
+  var cells="";
+  for(var y=0;y<5;y++)for(var x=0;x<3;x++){
+    if((h>>(y*3+x+4))&1){
+      var col=((h>>(y+x))&1)?c1:c2;
+      cells+='<rect x="'+x+'" y="'+y+'" width="1" height="1" fill="'+col+'"/>';
+      if(x<2)cells+='<rect x="'+(4-x)+'" y="'+y+'" width="1" height="1" fill="'+col+'"/>';
+    }
+  }
+  return '<svg class="icon" viewBox="-0.5 -0.5 6 6" aria-hidden="true" shape-rendering="crispEdges" style="background:#F6F7FC">'+cells+'</svg>';
+}
+function card(a){
+  var web=a.kind==='web',slug=slugOf(a.name);
+  var btn=a.url
+    ? (web?'<a class="btn sm" href="'+esc(a.url)+'" target="_blank" rel="noopener">Open</a>':'<a class="btn sm" href="'+esc(a.url)+'" download rel="noopener">Download</a>')
+    : '<button class="btn sm" disabled>Coming soon</button>';
+  return '<article class="app">'+
+    '<div class="app-top">'+iconSVG(a.name)+'<div><h3><a class="title-link" href="#'+slug+'">'+esc(a.name)+'</a></h3><small>'+esc(a.type)+' for '+esc(a.platform)+'</small></div></div>'+
+    '<p class="desc">'+esc(a.desc)+'</p>'+
+    '<div class="app-foot"><span>'+(web?'Runs in your browser':'Version '+esc(a.version)+', '+esc(a.size))+'</span><span class="acts"><a class="btn ghost sm" href="#'+slug+'">Details</a>'+btn+'</span></div>'+
+    '</article>';
+}
+document.getElementById("gameList").innerHTML=APPS.filter(function(a){return a.type==="Game"}).map(card).join("");
+
+var lib=document.getElementById("lib"),emptyMsg=document.getElementById("empty"),filt="all",q="";
+function renderLib(){
+  var list=APPS.filter(function(a){
+    var okF=filt==="all"||a.type===filt;
+    var okQ=!q||(a.name+" "+a.desc+" "+a.platform).toLowerCase().indexOf(q)>-1;
+    return okF&&okQ;
+  });
+  lib.innerHTML=list.map(card).join("");
+  emptyMsg.hidden=list.length>0;
+}
+renderLib();
+document.querySelectorAll(".chip").forEach(function(c){
+  c.addEventListener("click",function(){
+    document.querySelectorAll(".chip").forEach(function(o){o.setAttribute("aria-pressed","false")});
+    c.setAttribute("aria-pressed","true");filt=c.dataset.f;renderLib();
+  });
+});
+document.getElementById("search").addEventListener("input",function(e){q=e.target.value.trim().toLowerCase();renderLib()});
+
+/* ---- service icons ---- */
+var ICONS={
+  game:[".AAAAAAAA.","AAABAAAAAA","ABBBAAABAA","AAABAAAAAA","AAAAAAAAAA",".AA....AA."],
+  app:["AAAAAAAAAA","ABABAAAAAA","AAAAAAAAAA","A........A","A.BBBB...A","A........A","A.BB.BBB.A","AAAAAAAAAA"],
+  web:["..AAAAAA..",".A..AA..A.","A...AA...A","AAAAAAAAAA","A...AA...A","A...AA...A",".A..AA..A.","..AAAAAA.."],
+  call:["AAA.......","AAAA......","AAAA...B..",".AAAA.B.B.","..AAAA.B.B","...AAAA...",".....AAAA.","......AAAA"],
+  chat:["AAAAAAAAAA","A........A","A.B.B.B..A","A........A","AAAAAAAAAA","....AA....","...AA.....","..A......."]
+};
+document.querySelectorAll("[data-icon]").forEach(function(el){
+  var rows=ICONS[el.dataset.icon],w=rows[0].length,s="";
+  rows.forEach(function(r,y){for(var x=0;x<r.length;x++){var c=r[x];if(c!==".")s+='<rect class="'+(c==="A"?"a":"b")+'" x="'+x+'" y="'+y+'" width="1" height="1"/>'}});
+  el.outerHTML='<svg viewBox="0 0 '+w+' '+rows.length+'" aria-hidden="true">'+s+'</svg>';
+});
+
+/* ---- hero pixel pad ---- */
+var N=12,cv=document.getElementById("grid"),ctx=cv.getContext("2d"),S=cv.width/N;
+var cur=0,cells=[];
+var P=["............","..XXXXXX....","..XXXXXXX...","..XX...XXX..","..XX....XX..","..XX....XX..","..XX...XXX..","..XXXXXXX...","..XXXXXX....","..XX........","..XX........","............"];
+function colors(){return [cssVar("--magenta"),cssVar("--cyan"),cssVar("--sun"),cssVar("--ink")]}
+for(var y=0;y<N;y++){cells[y]=[];for(var x=0;x<N;x++)cells[y][x]=P[y][x]==="X"?0:-1}
+function drawPad(){
+  var cs=colors();ctx.fillStyle=cssVar("--bg");ctx.fillRect(0,0,cv.width,cv.height);
+  for(var y=0;y<N;y++)for(var x=0;x<N;x++){if(cells[y][x]>=0){ctx.fillStyle=cs[cells[y][x]];ctx.fillRect(x*S,y*S,S,S)}}
+  ctx.strokeStyle=cssVar("--line");ctx.lineWidth=1;ctx.beginPath();
+  for(var i=1;i<N;i++){ctx.moveTo(i*S+.5,0);ctx.lineTo(i*S+.5,cv.height);ctx.moveTo(0,i*S+.5);ctx.lineTo(cv.width,i*S+.5)}
+  ctx.stroke();
+}
+function paint(e){
+  var r=cv.getBoundingClientRect(),x=Math.floor((e.clientX-r.left)/r.width*N),y=Math.floor((e.clientY-r.top)/r.height*N);
+  if(x>=0&&y>=0&&x<N&&y<N&&cells[y][x]!==cur){cells[y][x]=cur;drawPad()}
+}
+var down=false;
+cv.addEventListener("pointerdown",function(e){down=true;cv.setPointerCapture(e.pointerId);paint(e)});
+cv.addEventListener("pointermove",function(e){if(down)paint(e)});
+cv.addEventListener("pointerup",function(){down=false});
+cv.addEventListener("pointercancel",function(){down=false});
+var sw=document.getElementById("swatches");
+colors().forEach(function(c,i){
+  var b=document.createElement("button");b.className="sw";b.type="button";b.setAttribute("aria-label","Colour "+(i+1));
+  b.setAttribute("aria-pressed",i===0?"true":"false");
+  b.addEventListener("click",function(){cur=i;sw.querySelectorAll(".sw").forEach(function(o,j){o.setAttribute("aria-pressed",j===i?"true":"false")})});
+  sw.appendChild(b);
+});
+function tintSwatches(){var cs=colors();sw.querySelectorAll(".sw").forEach(function(b,i){b.style.background=cs[i]})}
+document.getElementById("clearBtn").addEventListener("click",function(){for(var y=0;y<N;y++)for(var x=0;x<N;x++)cells[y][x]=-1;drawPad()});
+
+/* ---- mini game: Pixel Catch ---- */
+var gc=document.getElementById("game"),gx=gc.getContext("2d"),GW=gc.width,GH=gc.height;
+var ov=document.getElementById("overlay"),ovTitle=document.getElementById("ovTitle"),ovText=document.getElementById("ovText"),playBtn=document.getElementById("playBtn");
+var G={run:false,score:0,best:0,lives:3,items:[],px:GW/2,pw:76,spawn:0,last:0,dir:0,raf:0};
+try{G.best=parseInt(localStorage.getItem("pt-best"),10)||0}catch(e){}
+function drawGame(){
+  var bg=cssVar("--bg"),ink=cssVar("--ink"),mg=cssVar("--magenta"),sun=cssVar("--sun"),cy=cssVar("--cyan"),line=cssVar("--line");
+  gx.fillStyle=bg;gx.fillRect(0,0,GW,GH);
+  gx.fillStyle=line;
+  for(var x=0;x<GW;x+=24)for(var y=0;y<GH;y+=24)gx.fillRect(x,y,2,2);
+  G.items.forEach(function(it){
+    gx.fillStyle=it.k===0?mg:it.k===1?sun:ink;gx.fillRect(it.x,it.y,it.s,it.s);
+    if(it.k===2){gx.strokeStyle=bg;gx.lineWidth=3;gx.beginPath();gx.moveTo(it.x+4,it.y+4);gx.lineTo(it.x+it.s-4,it.y+it.s-4);gx.moveTo(it.x+it.s-4,it.y+4);gx.lineTo(it.x+4,it.y+it.s-4);gx.stroke()}
+  });
+  gx.fillStyle=cy;gx.fillRect(G.px-G.pw/2,GH-34,G.pw,14);
+  gx.fillStyle=ink;gx.fillRect(G.px-G.pw/2,GH-20,G.pw,6);
+  gx.fillStyle=ink;gx.font="800 22px "+cssVar("--head");gx.textBaseline="top";
+  gx.textAlign="left";gx.fillText("Score "+G.score,12,10);
+  gx.textAlign="right";gx.fillText("Best "+G.best,GW-12,10);
+  for(var i=0;i<3;i++){gx.fillStyle=i<G.lives?mg:line;gx.fillRect(12+i*20,40,14,14)}
+}
+function loop(t){
+  if(!G.run)return;
+  var dt=Math.min((t-G.last)/1000,.05);G.last=t;
+  G.px=Math.max(G.pw/2,Math.min(GW-G.pw/2,G.px+G.dir*340*dt));
+  G.spawn-=dt;
+  var lvl=Math.min(G.score/40,3);
+  if(G.spawn<=0){
+    G.spawn=Math.max(.35,.8-lvl*.12);
+    var r=Math.random(),k=r<.22?2:r<.35?1:0;
+    G.items.push({x:Math.random()*(GW-20),y:-20,s:20,vy:150+lvl*45+Math.random()*60,k:k});
+  }
+  var py=GH-34;
+  G.items=G.items.filter(function(it){
+    it.y+=it.vy*dt;
+    var hit=it.y+it.s>=py&&it.y<=py+14&&it.x+it.s>G.px-G.pw/2&&it.x<G.px+G.pw/2;
+    if(hit){
+      if(it.k===2){G.lives--}else{G.score+=it.k===1?3:1}
+      return false;
+    }
+    return it.y<GH;
+  });
+  drawGame();
+  if(G.lives<=0){endGame();return}
+  G.raf=requestAnimationFrame(loop);
+}
+function startGame(){
+  G.score=0;G.lives=3;G.items=[];G.spawn=0;G.run=true;ov.hidden=true;gc.focus({preventScroll:true});
+  G.last=performance.now();G.raf=requestAnimationFrame(loop);
+}
+function endGame(){
+  G.run=false;
+  var nb=G.score>G.best;
+  if(nb){G.best=G.score;try{localStorage.setItem("pt-best",String(G.best))}catch(e){}}
+  drawGame();
+  ovTitle.textContent="Game over";
+  ovText.textContent="You scored "+G.score+(nb&&G.score>0?". That’s a new best!":". Best is "+G.best+".");
+  playBtn.textContent="Play again";offerSave();ov.hidden=false;
+}
+playBtn.addEventListener("click",startGame);
+gc.addEventListener("pointermove",function(e){var r=gc.getBoundingClientRect();G.px=Math.max(G.pw/2,Math.min(GW-G.pw/2,(e.clientX-r.left)/r.width*GW));if(!G.run)drawGame()});
+gc.addEventListener("pointerdown",function(e){var r=gc.getBoundingClientRect();G.px=Math.max(G.pw/2,Math.min(GW-G.pw/2,(e.clientX-r.left)/r.width*GW))});
+gc.addEventListener("keydown",function(e){
+  if(e.key==="ArrowLeft"){G.dir=-1;e.preventDefault()}
+  else if(e.key==="ArrowRight"){G.dir=1;e.preventDefault()}
+});
+gc.addEventListener("keyup",function(e){if((e.key==="ArrowLeft"&&G.dir<0)||(e.key==="ArrowRight"&&G.dir>0))G.dir=0});
+gc.addEventListener("blur",function(){G.dir=0});
+
+/* ---- AI call demo ---- */
+var SCRIPT=[
+  ["ai","Hello, thanks for calling Hartley Plumbing. How can I help?"],
+  ["caller","Hi, my boiler’s stopped working and I’ve got no hot water."],
+  ["ai","Sorry to hear that. Can I take your name and the town you’re in?"],
+  ["caller","Sam Patel, I’m in Exeter."],
+  ["ai","Thanks Sam. I can book an engineer for tomorrow morning, between 9 and 11. Does that work?"],
+  ["caller","Yes, that’s perfect."],
+  ["ai","Booked. You’ll get a text to confirm, and I’ve passed the details to the team."],
+  ["sum","Summary sent to the team: boiler fault, Sam Patel, Exeter. Booked tomorrow 9 to 11."]
+];
+var chat=document.getElementById("chat"),callBtn=document.getElementById("callBtn"),callState=document.getElementById("callState"),callTimer=null;
+function addMsg(m){
+  var d=document.createElement("div");
+  d.className="msg "+(m[0]==="ai"?"ai-m":m[0]==="caller"?"caller":"sum");
+  d.innerHTML=(m[0]==="ai"?"<small>AI receptionist</small>":m[0]==="caller"?"<small>Caller</small>":"<small>Sent to you</small>")+esc(m[1]);
+  chat.appendChild(d);
+}
+callBtn.addEventListener("click",function(){
+  clearTimeout(callTimer);chat.innerHTML="";callState.textContent="On call";callBtn.textContent="Replay";
+  var i=0;
+  function next(){
+    if(i>=SCRIPT.length){callState.textContent="Call ended";return}
+    addMsg(SCRIPT[i]);i++;
+    if(reduce)next();else callTimer=setTimeout(next,1400);
+  }
+  next();
+});
+(function(){var d=document.createElement("p");d.style.cssText="color:var(--muted);margin:auto;text-align:center;max-width:24ch";d.textContent="Press Play demo call to hear how a call goes.";chat.appendChild(d)})();
+
+/* ---- theme, nav, form, year ---- */
+var root=document.documentElement,tb=document.getElementById("themeBtn");
+function isDark(){var t=root.getAttribute("data-theme");return t?t==="dark":(window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches)}
+function syncTheme(){tb.textContent=isDark()?"Light":"Dark";tintSwatches();drawPad();drawGame()}
+tb.addEventListener("click",function(){root.setAttribute("data-theme",isDark()?"light":"dark");syncTheme()});
+if(window.matchMedia)matchMedia("(prefers-color-scheme: dark)").addEventListener("change",syncTheme);
+syncTheme();
+
+var mb=document.getElementById("menuBtn"),nav=document.getElementById("nav");
+mb.addEventListener("click",function(){var o=nav.classList.toggle("open");mb.setAttribute("aria-expanded",o)});
+nav.addEventListener("click",function(e){if(e.target.tagName==="A"){nav.classList.remove("open");mb.setAttribute("aria-expanded","false")}});
+document.getElementById("form").addEventListener("submit",function(e){
+  e.preventDefault();var f=e.target;
+  var body="Name: "+f.name.value+"\nEmail: "+f.email.value+"\nNeeds: "+f.service.value+"\n\n"+f.msg.value;
+  location.href="mailto:pixelandtech.uk@gmail.com?subject="+encodeURIComponent("Project enquiry from "+f.name.value)+"&body="+encodeURIComponent(body);
+});
+document.getElementById("joinForm").addEventListener("submit",function(e){
+  e.preventDefault();var f=e.target;
+  var body="Name: "+f.name.value+"\nEmail: "+f.email.value+"\nWhat I do: "+f.role.value+"\n\n"+f.msg.value;
+  location.href="mailto:pixelandtech.uk@gmail.com?subject="+encodeURIComponent("Interested in joining: "+f.name.value)+"&body="+encodeURIComponent(body);
+});
+document.getElementById("yr").textContent=new Date().getFullYear();
+
+/* ---- leaderboard ---- */
+var SC=[];
+try{SC=JSON.parse(localStorage.getItem('pt-scores')||'[]')}catch(e){SC=[]}
+if(!Array.isArray(SC))SC=[];
+var nameRow=document.getElementById('nameRow'),nameIn=document.getElementById('nameIn'),saveBtn=document.getElementById('saveScore'),scoresEl=document.getElementById('scores');
+function renderScores(){
+  scoresEl.innerHTML=SC.length?SC.map(function(x,i){return '<li><span>'+(i+1)+'. '+esc(x.n)+'</span><b>'+x.s+'</b></li>'}).join(''):'<li class="none">No scores yet. Be the first!</li>';
+}
+function offerSave(){
+  var ok=G.score>0&&(SC.length<5||G.score>SC[SC.length-1].s);
+  nameRow.hidden=!ok;
+  if(ok){try{nameIn.value=localStorage.getItem('pt-name')||''}catch(e){}}
+}
+function saveScore(){
+  var n=(nameIn.value.trim()||'Player').slice(0,12);
+  SC.push({n:n,s:G.score});
+  SC.sort(function(a,b){return b.s-a.s});
+  SC=SC.slice(0,5);
+  try{localStorage.setItem('pt-scores',JSON.stringify(SC));localStorage.setItem('pt-name',n)}catch(e){}
+  renderScores();nameRow.hidden=true;ovText.textContent='Score saved, '+n+'. Want another go?';
+}
+saveBtn.addEventListener('click',saveScore);
+nameIn.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();saveScore()}});
+renderScores();
+
+/* ---- newsletter ---- */
+document.getElementById('newsForm').addEventListener('submit',function(e){
+  e.preventDefault();
+  var em=e.target.email.value;
+  location.href='mailto:pixelandtech.uk@gmail.com?subject='+encodeURIComponent('Newsletter sign-up')+'&body='+encodeURIComponent('Please add me to the Pixel and Tech Studio newsletter.\n\nEmail: '+em);
+});
+
+/* ---- press kit ---- */
+function copyText(t,b){
+  function done(){var o=b.textContent;b.textContent='Copied';setTimeout(function(){b.textContent=o},1500)}
+  function fallback(){
+    var a=document.createElement('textarea');a.value=t;a.style.position='fixed';a.style.opacity='0';
+    document.body.appendChild(a);a.select();
+    try{document.execCommand('copy');done()}catch(e){}
+    document.body.removeChild(a);
+  }
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,fallback)}else{fallback()}
+}
+document.querySelectorAll('[data-copy]').forEach(function(b){b.addEventListener('click',function(){copyText(b.dataset.copy,b)})});
+document.querySelectorAll('[data-copy-el]').forEach(function(b){b.addEventListener('click',function(){copyText(document.getElementById(b.dataset.copyEl).textContent.trim(),b)})});
+
+function logoSVG(fourth){
+  return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 29 29" width="580" height="580" shape-rendering="crispEdges"><rect x="0" y="0" width="13" height="13" fill="#E4007C"/><rect x="16" y="0" width="13" height="13" fill="#FFC72C"/><rect x="0" y="16" width="13" height="13" fill="#00A9CE"/><rect x="16" y="16" width="13" height="13" fill="'+fourth+'"/></svg>';
+}
+var FACT_SHEET=[
+  'Pixel and Tech Studio: fact sheet','',
+  'Based in: Newcastle upon Tyne, UK',
+  'Our products: original games and apps',
+  'For businesses: custom software and apps, web design, AI call handling',
+  'Contact: pixelandtech.uk@gmail.com','',
+  'About',
+  document.getElementById('boiler').textContent.trim(),'',
+  'Brand colours',
+  'Magenta #E4007C','Cyan #00A9CE','Yellow #FFC72C','Navy #1B1A4B','Paper #F6F7FC','',
+  'Fonts: Bricolage Grotesque (headings), Figtree (body text)'
+].join('\n');
+(function(){
+  if(!(window.claude&&window.claude.use))return;
+  window.claude.use('downloads').then(function(dl){
+    if(!dl)return;
+    function wire(id,name,data){
+      var b=document.getElementById(id);b.hidden=false;
+      b.addEventListener('click',function(){dl.save({filename:name,data:data}).catch(function(){})});
+    }
+    wire('dlLogo','pixel-and-tech-studio-logo.svg',logoSVG('#1B1A4B'));
+    wire('dlLogoDark','pixel-and-tech-studio-logo-dark-background.svg',logoSVG('#FFFFFF'));
+    wire('dlFacts','pixel-and-tech-studio-fact-sheet.txt',FACT_SHEET);
+  }).catch(function(){});
+})();
+
+/* ---- page views: privacy and press kit ---- */
+var mainEl=document.getElementById('top'),vPriv=document.getElementById('viewPrivacy'),vPress=document.getElementById('viewPress'),wasView=false;
+var PAGES={home:['.hero','.ticker','#tiles','#community'],games:['#games','#community'],services:['#services','#ai','#process'],software:['#software'],about:['#about','#faq'],hiring:['#hiring'],contact:['#contact']};
+var ALIAS={'':'home',top:'home',home:'home',games:'games',services:'services',ai:'services',process:'services',software:'software',about:'about',faq:'about',hiring:'hiring',careers:'hiring',contact:'contact'};
+var ALLSEL=[].concat.apply([],Object.keys(PAGES).map(function(k){return PAGES[k]}));
+var curPage=null,shown=null,shownApp=null,wipeTimer=null,wipeOff=null;
+var wipeEl=document.getElementById('wipe'),vApp=document.getElementById('viewApp'),appBody=document.getElementById('appBody');
+var BASE_TITLE=document.title;
+function slugOf(n){return 'app-'+n.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'')}
+function findApp(h){for(var i=0;i<APPS.length;i++){if(slugOf(APPS[i].name)===h)return APPS[i]}return null}
+function rng(a){return function(){a|=0;a=a+0x6D2B79F5|0;var t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+function sceneSVG(name,v){
+  var r=rng(hash(name)+v*7919),P=['#1B1A4B','#00A9CE','#FFC72C','#E4007C'];
+  var b=Math.floor(r()*4),bg=P[b],gr=P[(b+1)%4],ac=P[(b+2)%4],ac2=P[(b+3)%4],i,o='';
+  o+='<rect width="32" height="18" fill="'+bg+'"/>';
+  for(i=0;i<7;i++){o+='<rect x="'+Math.floor(r()*29)+'" y="'+Math.floor(r()*7)+'" width="'+(1+Math.floor(r()*3))+'" height="1" fill="'+ac+'" opacity=".4"/>'}
+  for(i=0;i<32;i++){var h=2+(r()>.75?1:0);o+='<rect x="'+i+'" y="'+(18-h)+'" width="1" height="'+h+'" fill="'+gr+'"/>'}
+  for(i=0;i<3;i++){var px=Math.floor(r()*22)+2,py=7+Math.floor(r()*5),pw=4+Math.floor(r()*4);
+    o+='<rect x="'+px+'" y="'+py+'" width="'+pw+'" height="1" fill="'+gr+'"/>';
+    o+='<rect x="'+(px+1)+'" y="'+(py-1)+'" width="1" height="1" fill="'+ac+'"/>'}
+  for(i=0;i<4;i++){o+='<rect x="'+Math.floor(r()*30)+'" y="'+(3+Math.floor(r()*9))+'" width="1" height="1" fill="'+ac+'"/>'}
+  var hx=3+Math.floor(r()*20);
+  o+='<rect x="'+hx+'" y="13" width="2" height="2" fill="'+ac2+'"/><rect x="'+(hx+1)+'" y="13" width="1" height="1" fill="'+bg+'"/>';
+  o+='<rect x="'+(hx+7+Math.floor(r()*5))+'" y="14" width="1" height="1" fill="'+ac2+'"/>';
+  return '<svg viewBox="0 0 32 18" preserveAspectRatio="xMidYMid slice" shape-rendering="crispEdges" aria-hidden="true">'+o+'</svg>';
+}
+function mediaFor(a){
+  if(a.media&&a.media.length)return a.media;
+  var m=[],k;
+  if(a.type==='Game')m.push({type:'video',ph:true,alt:'Trailer coming soon'});
+  for(k=0;k<3;k++)m.push({type:'image',ph:true,alt:'Screenshot coming soon'});
+  return m;
+}
+function slideHTML(m,a,k){
+  var open='<div class="slide" data-cap="'+esc(m.alt||'')+'"'+(k?' hidden':'')+'>';
+  if(m.ph)return open+sceneSVG(a.name,m.type==='video'?0:k)+(m.type==='video'?'<div class="play"><b></b></div>':'')+'</div>';
+  if(m.type==='video')return open+'<video controls preload="metadata" playsinline'+(m.poster?' poster="'+esc(m.poster)+'"':'')+' src="'+esc(m.src)+'"></video></div>';
+  return open+'<img src="'+esc(m.src)+'" alt="'+esc(m.alt||a.name+' screenshot')+'"></div>';
+}
+function thumbHTML(m,a,k){
+  var inner;
+  if(m.ph)inner=sceneSVG(a.name,m.type==='video'?0:k);
+  else if(m.type==='video')inner=m.poster?'<img src="'+esc(m.poster)+'" alt="">':'';
+  else inner='<img src="'+esc(m.src)+'" alt="">';
+  return '<button class="thumb" type="button" aria-label="Show item '+(k+1)+(m.type==='video'?' (video)':'')+'" aria-current="'+(k?'false':'true')+'">'+inner+(m.type==='video'?'<span class="vb"></span>':'')+'</button>';
+}
+function initCarousel(el){
+  var slides=[].slice.call(el.querySelectorAll('.slide')),thumbs=[].slice.call(el.querySelectorAll('.thumb')),
+      cap=el.querySelector('.cap'),cnt=el.querySelector('.count'),i=0,sx=null;
+  function go(n){
+    i=(n+slides.length)%slides.length;
+    slides.forEach(function(s,k){s.hidden=k!==i;var v=s.querySelector('video');if(v&&k!==i)v.pause()});
+    thumbs.forEach(function(t,k){t.setAttribute('aria-current',k===i?'true':'false')});
+    cap.textContent=slides[i].dataset.cap||'';cnt.textContent=(i+1)+' of '+slides.length;
+    if(thumbs[i]&&thumbs[i].scrollIntoView){try{thumbs[i].scrollIntoView({block:'nearest',inline:'nearest'})}catch(e){}}
+  }
+  var pv=el.querySelector('.prev'),nx=el.querySelector('.next');
+  if(pv)pv.addEventListener('click',function(){go(i-1)});
+  if(nx)nx.addEventListener('click',function(){go(i+1)});
+  thumbs.forEach(function(t,k){t.addEventListener('click',function(){go(k)})});
+  el.addEventListener('keydown',function(e){
+    if(e.target.tagName==='VIDEO')return;
+    if(e.key==='ArrowLeft'){go(i-1);e.preventDefault()}else if(e.key==='ArrowRight'){go(i+1);e.preventDefault()}
+  });
+  var st=el.querySelector('.stage');
+  st.addEventListener('pointerdown',function(e){sx=(e.target.closest&&e.target.closest('video,.car-btn'))?null:e.clientX});
+  st.addEventListener('pointerup',function(e){
+    if(sx===null)return;var dx=e.clientX-sx;sx=null;
+    if(Math.abs(dx)>40)go(dx<0?i+1:i-1);
+  });
+  go(0);
+}
+function actionsFor(a){
+  var web=a.kind==='web',out=[];
+  if(a.buyUrl)out.push('<a class="btn" href="'+esc(a.buyUrl)+'" target="_blank" rel="noopener">'+esc(a.buyLabel||'Buy now')+'</a>');
+  if(a.url)out.push(web?'<a class="btn" href="'+esc(a.url)+'" target="_blank" rel="noopener">Open web app</a>':'<a class="btn" href="'+esc(a.url)+'" download rel="noopener">Download</a>');
+  if(a.wishlistUrl)out.push('<a class="btn ghost" href="'+esc(a.wishlistUrl)+'" target="_blank" rel="noopener">'+esc(a.wishlistLabel||'Add to wishlist')+'</a>');
+  if(!out.length)out.push('<button class="btn" disabled>Coming soon</button>');
+  if(a.type==='Game'&&!a.wishlistUrl&&!a.buyUrl)out.push('<button class="btn ghost" disabled>Wishlist link coming soon</button>');
+  return out.join('');
+}
+function renderApp(a){
+  var web=a.kind==='web',med=mediaFor(a),n=med.length;
+  var back=a.type==='Game'?'<a class="back" href="#games">Back to games</a>':'<a class="back" href="#software">Back to the software library</a>';
+  var feats=(a.features||[]).map(function(f){return '<li>'+esc(f)+'</li>'}).join('');
+  var others=APPS.filter(function(x){return x!==a}).slice(0,3).map(card).join('');
+  var slides=med.map(function(m,k){return slideHTML(m,a,k)}).join('');
+  var thumbs=med.map(function(m,k){return thumbHTML(m,a,k)}).join('');
+  appBody.innerHTML=back+
+    '<div class="app-hero">'+iconSVG(a.name)+'<div><h1>'+esc(a.name)+'</h1><div class="tags"><span class="tag">'+esc(a.type)+'</span><span class="tag">'+(web?'Web app':'Download')+'</span><span class="tag">'+esc(a.platform)+'</span></div></div></div>'+
+    '<div class="carousel" tabindex="0" aria-roledescription="carousel" aria-label="'+esc(a.name)+' videos and screenshots">'+
+      '<div class="stage">'+slides+(n>1?'<button class="car-btn prev" type="button" aria-label="Previous">\u2039</button><button class="car-btn next" type="button" aria-label="Next">\u203a</button>':'')+'</div>'+
+      '<div class="car-bar"><span class="cap" aria-live="polite"></span><span class="count"></span></div>'+
+      (n>1?'<div class="thumbs">'+thumbs+'</div>':'')+
+    '</div>'+
+    '<div class="app-cols"><div><p class="app-long">'+esc(a.long||a.desc)+'</p>'+(feats?'<h2>What you can do</h2><ul>'+feats+'</ul>':'')+'</div>'+
+    '<aside class="get-box"><h3>'+(web?'Try ':'Get ')+esc(a.name)+'</h3>'+(a.price?'<p class="price">'+esc(a.price)+'</p>':'')+'<div class="acts-col">'+actionsFor(a)+'</div>'+
+    '<dl><dt>Type</dt><dd>'+esc(a.type)+'</dd><dt>Works on</dt><dd>'+esc(a.platform)+'</dd><dt>Version</dt><dd>'+esc(a.version)+'</dd><dt>Size</dt><dd>'+(web?'Nothing to download':esc(a.size))+'</dd></dl><p class="dc-note">Questions or feedback? <a data-discord data-off="Discord link coming soon">Join our Discord</a></p></aside></div>'+
+    '<h2>More from us</h2><div class="lib-grid">'+others+'</div>';
+  initCarousel(appBody.querySelector('.carousel'));
+  wireDiscord(appBody);
+  document.title=a.name+' \u2013 Pixel and Tech Studio';
+}
+function show(key,app){
+  var isMain=PAGES.hasOwnProperty(key);
+  document.title=BASE_TITLE;
+  mainEl.hidden=!isMain;vPriv.hidden=key!=='privacy';vPress.hidden=key!=='press';vApp.hidden=key!=='app';
+  if(isMain){ALLSEL.forEach(function(sel){var el=document.querySelector(sel);if(el)el.hidden=PAGES[key].indexOf(sel)<0})}
+  if(key==='app')renderApp(app);
+  var navKey=isMain?key:(key==='app'?(app.type==='Game'?'games':'software'):'');
+  document.querySelectorAll('nav a').forEach(function(a){
+    if(navKey&&a.getAttribute('href')==='#'+navKey){a.setAttribute('aria-current','page')}else{a.removeAttribute('aria-current')}
+  });
+  if(isMain)curPage=key;
+  shown=key;shownApp=app;
+}
+function route(){
+  var h=location.hash.slice(1),app=null,key;
+  if(h==='privacy'||h==='press'){key=h}
+  else if((app=findApp(h))){key='app'}
+  else if(ALIAS.hasOwnProperty(h)){key=ALIAS[h]}
+  else if(h==='news'){key=(shown&&PAGES.hasOwnProperty(shown))?shown:'home'}
+  else{key='home'}
+  var inPage=['ai','process','faq','news'].indexOf(h)>-1;
+  var same=(key===shown)&&(key!=='app'||app===shownApp);
+  clearTimeout(wipeTimer);
+  function go(){
+    show(key,app);
+    var t=inPage&&document.getElementById(h);
+    if(t){t.scrollIntoView()}else{window.scrollTo(0,0)}
+  }
+  if(same){
+    wipeEl.classList.remove('go');
+    var t0=inPage&&document.getElementById(h);
+    if(t0)t0.scrollIntoView();
+    return;
+  }
+  if(shown===null||reduce){go();return}
+  wipeEl.classList.remove('go');void wipeEl.offsetWidth;wipeEl.classList.add('go');
+  wipeTimer=setTimeout(go,480);
+  clearTimeout(wipeOff);
+  wipeOff=setTimeout(function(){wipeEl.classList.remove('go')},1000);
+}
+window.addEventListener('hashchange',route);
+route();
+wireDiscord(document);
+var ld=document.getElementById('loader');
+setTimeout(function(){if(ld)ld.hidden=true},1400);
+</script>
+</body>
+</html>
