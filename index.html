@@ -8,6 +8,11 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<script>
+/* Apply a saved light/dark choice before the page paints, so it never flashes the wrong theme.
+   With no saved choice, the CSS below follows the device's own light/dark setting. */
+(function(){try{var t=localStorage.getItem("pt-theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t)}catch(e){}})();
+</script>
 <style>
 :root{
   --bg:#F6F7FC; --surface:#FFFFFF; --ink:#1B1A4B; --muted:#585A82; --line:#D9DCEE;
@@ -62,6 +67,22 @@ nav a{display:block;padding:.5rem .8rem;text-decoration:none;font-weight:500;bor
 nav a:hover{border-bottom-color:var(--magenta)}
 .icon-btn{background:none;border:2px solid var(--ink);color:var(--ink);font:600 .9rem var(--body);padding:.4rem .7rem;cursor:pointer}
 .icon-btn:hover{background:var(--sun);color:#1B1A4B}
+.icon-btn.ico{display:inline-grid;place-items:center;width:40px;height:40px;padding:0;flex:none}
+.icon-btn.ico svg{width:20px;height:20px;display:block;fill:currentColor;shape-rendering:crispEdges}
+
+/* Discord icon buttons and "Coming soon" tooltip */
+.dc-btn{position:relative}
+.dc-btn svg{display:block;fill:currentColor;shape-rendering:crispEdges}
+.icon-btn.dc-btn{background:var(--sun);color:#1B1A4B}
+.icon-btn.dc-btn:hover{background:#FFFFFF}
+.tip{position:absolute;left:50%;bottom:calc(100% + 10px);transform:translateX(calc(-50% + var(--shift,0px)));z-index:40;white-space:nowrap;pointer-events:none;
+  background:var(--ink);color:var(--bg);border:2px solid var(--ink);box-shadow:3px 3px 0 var(--magenta);
+  font:600 .85rem/1.2 var(--body);padding:.35rem .6rem;display:none}
+.tip::after{content:"";position:absolute;left:calc(50% - var(--shift,0px));top:100%;margin-left:-6px;border:6px solid transparent;border-top-color:var(--ink)}
+.dc-btn.tip-down .tip{bottom:auto;top:calc(100% + 10px)}
+.dc-btn.tip-down .tip::after{top:auto;bottom:100%;border-top-color:transparent;border-bottom-color:var(--ink)}
+.dc-btn:hover .tip,.dc-btn:focus-visible .tip,.dc-btn.show-tip .tip{display:block}
+.dc-btn.no-tip .tip{display:none}
 .menu-btn{display:none}
 
 .btn{display:inline-block;font:600 1rem var(--body);padding:.8rem 1.35rem;border:2px solid var(--ink);background:var(--ink);color:var(--bg);text-decoration:none;cursor:pointer;border-radius:0;box-shadow:4px 4px 0 var(--magenta);transition:transform .12s,box-shadow .12s}
@@ -210,18 +231,25 @@ nav a:hover{border-bottom-color:var(--magenta)}
 .get-box dd{margin:0;color:var(--muted)}
 .get-box .btn{display:block;text-align:center;width:100%}
 .get-box .dc-note{margin-top:1.1rem;font-size:.95rem;color:var(--muted)}
-.get-box .dc-note a{text-underline-offset:3px;text-decoration-color:var(--magenta);text-decoration-thickness:2px}
-.icon-btn.dc{background:var(--sun);color:#1B1A4B;text-decoration:none;display:inline-block}
-.icon-btn.dc:hover{background:#FFFFFF}
-[data-discord][aria-disabled="true"]{opacity:.65;cursor:not-allowed}
+.get-box .dc-note{display:flex;align-items:center;gap:.75rem;flex-wrap:wrap}
+.dc-note .dc-btn{width:36px;height:36px}
+.dc-note .dc-btn svg{width:18px;height:18px}
 .dc-box{--c:var(--cyan);display:flex;gap:1.5rem;align-items:center;flex-wrap:wrap;background:var(--surface);border:2px solid var(--ink);box-shadow:8px 8px 0 var(--cyan);padding:1.75rem}
-.dc-box svg{width:72px;height:auto;display:block;shape-rendering:crispEdges}
+.dc-box > svg{width:72px;height:auto;display:block;shape-rendering:crispEdges}
 .dc-box svg .a{fill:var(--c)}
 .dc-box svg .b{fill:var(--ink)}
 .dc-box > div{flex:1 1 280px}
 .dc-box h2{font-size:clamp(1.5rem,3vw,2rem)}
 .dc-box p{color:var(--muted);margin-top:.5rem}
-@media (max-width:560px){.icon-btn.dc{display:none}}
+.btn.dc-btn{display:inline-grid;place-items:center;width:64px;height:56px;padding:0}
+.btn.dc-btn svg{width:32px;height:32px}
+.foot-dc{background:none;border:2px solid #FFFFFF;color:#FFFFFF;width:34px;height:34px;padding:0;display:inline-grid;place-items:center;cursor:pointer;vertical-align:middle}
+.foot-dc:hover{background:#FFFFFF;color:#E4007C}
+.foot-dc svg{width:18px;height:18px}
+.foot-dc .tip{background:#1B1A4B;color:#FFFFFF;border-color:#1B1A4B}
+.foot-dc .tip::after{border-top-color:#1B1A4B}
+/* very narrow phones: keep the header on one row; Discord stays in the page and footer */
+@media (max-width:359px){header .icon-btn.dc-btn{display:none}}
 .get-box .price{font:800 1.8rem var(--head);margin:0 0 1rem}
 .get-box .acts-col{display:grid;gap:.9rem}
 .carousel{margin-top:2rem}
@@ -372,6 +400,8 @@ footer a:hover{text-decoration:underline;text-decoration-color:#FFC72C;text-deco
   <p>Pixel and Tech Studio</p>
 </div>
 
+<p class="sr" id="dcLive" aria-live="polite"></p>
+
 <div class="wipe" id="wipe" aria-hidden="true"><i style="--k:0"></i><i style="--k:1"></i><i style="--k:2"></i><i style="--k:3"></i><i style="--k:4"></i><i style="--k:5"></i><i style="--k:6"></i><i style="--k:7"></i></div>
 
 <header>
@@ -391,8 +421,8 @@ footer a:hover{text-decoration:underline;text-decoration-color:#FFC72C;text-deco
           <li><a href="#contact">Contact</a></li>
         </ul>
       </nav>
-      <a class="icon-btn dc" data-discord data-off="Discord soon">Join Discord</a>
-      <button class="icon-btn" id="themeBtn" type="button" aria-label="Switch between light and dark mode">Dark</button>
+      <button class="icon-btn ico dc-btn tip-down" type="button" data-discord></button>
+      <button class="icon-btn ico" id="themeBtn" type="button" aria-label="Switch between light and dark mode"></button>
       <button class="icon-btn menu-btn" id="menuBtn" type="button" aria-expanded="false" aria-controls="nav">Menu</button>
     </div>
   </div>
@@ -486,7 +516,7 @@ footer a:hover{text-decoration:underline;text-decoration-color:#FFC72C;text-deco
           <h2>Join our Discord</h2>
           <p>Chat with the team and other players, share feedback and hear about new games first.</p>
         </div>
-        <a class="btn" data-discord data-off="Discord link coming soon">Join our Discord</a>
+        <button class="btn dc-btn" type="button" data-discord></button>
       </div>
     </div>
   </section>
@@ -783,7 +813,7 @@ footer a:hover{text-decoration:underline;text-decoration-color:#FFC72C;text-deco
       <li><a href="#hiring">Careers</a></li>
       <li><a href="#contact">Contact</a></li>
       <li><a href="#press">Press kit</a></li>
-      <li><a data-discord data-off="Discord (soon)">Discord</a></li>
+      <li><button class="foot-dc dc-btn" type="button" data-discord></button></li>
       <li><a href="#privacy">Privacy policy</a></li>
     </ul>
     <a href="mailto:pixelandtech.uk@gmail.com">pixelandtech.uk@gmail.com</a>
@@ -834,13 +864,56 @@ var APPS = [
     url:"", buyUrl:"", wishlistUrl:"", media:[] }
 ];
 
+/* ---- small pixel icons drawn in the text colour ("A" = filled pixel) ---- */
+var GLYPHS={
+  sun:["....A....",".A.....A.","...AAA...","..AAAAA..","A.AAAAA.A","..AAAAA..","...AAA...",".A.....A.","....A...."],
+  moon:["..AAAA...",".AAA.....","AAA......","AAA......","AAA......","AAA.....A",".AAA...AA","..AAAAAA.","...AAAA.."],
+  /* our own pixel gamepad, used as the Discord icon */
+  discord:["............",".AAAA..AAAA.","AAAAAAAAAAAA","AA.AAAAAAA.A","A...AAAAA.A.","AA.AAAAAAA.A","AAAAAAAAAAAA","AAAA....AAAA",".AA......AA.","............"]
+};
+function glyph(name){
+  var rows=GLYPHS[name],w=rows[0].length,s="";
+  rows.forEach(function(r,y){for(var x=0;x<r.length;x++){if(r[x]==="A")s+='<rect x="'+x+'" y="'+y+'" width="1" height="1"/>'}});
+  return '<svg viewBox="0 0 '+w+' '+rows.length+'" aria-hidden="true" focusable="false">'+s+'</svg>';
+}
+
 /* Paste your Discord invite link between the quotes, for example "https://discord.gg/yourcode".
-   While it is empty the Discord buttons show as "coming soon". */
+   While it is empty every Discord icon shows a "Coming soon" message on hover, focus or click,
+   and goes nowhere. Once it is set, the icons become links that open Discord in a new tab. */
 var DISCORD_URL="";
 function wireDiscord(root){
-  (root||document).querySelectorAll('[data-discord]').forEach(function(a){
-    if(DISCORD_URL){a.href=DISCORD_URL;a.target='_blank';a.rel='noopener';a.removeAttribute('aria-disabled')}
-    else{a.removeAttribute('href');a.setAttribute('aria-disabled','true');a.title='Invite link coming soon';a.textContent=a.dataset.off||'Discord link coming soon'}
+  (root||document).querySelectorAll('[data-discord]:not([data-wired])').forEach(function(b){
+    b.setAttribute('data-wired','');
+    if(DISCORD_URL){
+      var a=document.createElement('a');
+      a.className=b.className;a.href=DISCORD_URL;a.target='_blank';a.rel='noopener';
+      a.setAttribute('data-discord','');a.setAttribute('data-wired','');
+      a.setAttribute('aria-label','Join our Discord (opens in a new tab)');a.title='Join our Discord';
+      a.innerHTML=glyph('discord');b.replaceWith(a);return;
+    }
+    b.type='button';
+    b.setAttribute('aria-label','Discord: coming soon');
+    b.innerHTML=glyph('discord')+'<span class="tip" aria-hidden="true">Discord: coming soon</span>';
+    var t=null,tip=b.querySelector('.tip');
+    function hide(){clearTimeout(t);b.classList.remove('show-tip')}
+    /* keep the tooltip inside the screen on narrow phones */
+    function fit(){
+      tip.style.removeProperty('--shift');
+      var r=tip.getBoundingClientRect(),m=8,w=document.documentElement.clientWidth,d=0;
+      if(!r.width)return;
+      if(r.right>w-m)d=w-m-r.right;else if(r.left<m)d=m-r.left;
+      if(d)tip.style.setProperty('--shift',Math.round(d)+'px');
+    }
+    ['mouseenter','focus'].forEach(function(ev){b.addEventListener(ev,function(){requestAnimationFrame(fit)})});
+    b.addEventListener('click',function(e){
+      e.preventDefault();b.classList.remove('no-tip');b.classList.add('show-tip');fit();
+      clearTimeout(t);t=setTimeout(hide,2000);
+      var live=document.getElementById('dcLive');
+      if(live){live.textContent='';setTimeout(function(){live.textContent='Discord is coming soon.'},50)}
+    });
+    b.addEventListener('keydown',function(e){if(e.key==='Escape'){hide();b.classList.add('no-tip')}});
+    b.addEventListener('blur',function(){hide();b.classList.remove('no-tip')});
+    b.addEventListener('mouseleave',function(){b.classList.remove('no-tip')});
   });
 }
 function cssVar(n){return getComputedStyle(document.documentElement).getPropertyValue(n).trim()}
@@ -1048,10 +1121,24 @@ callBtn.addEventListener("click",function(){
 
 /* ---- theme, nav, form, year ---- */
 var root=document.documentElement,tb=document.getElementById("themeBtn");
-function isDark(){var t=root.getAttribute("data-theme");return t?t==="dark":(window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches)}
-function syncTheme(){tb.textContent=isDark()?"Light":"Dark";tintSwatches();drawPad();drawGame()}
-tb.addEventListener("click",function(){root.setAttribute("data-theme",isDark()?"light":"dark");syncTheme()});
-if(window.matchMedia)matchMedia("(prefers-color-scheme: dark)").addEventListener("change",syncTheme);
+/* No saved choice: follow the device setting. Once the visitor picks, remember it in localStorage ("pt-theme"). */
+function isDark(){var t=root.getAttribute("data-theme");return t?t==="dark":!!(window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches)}
+function syncTheme(){
+  var d=isDark(),label=d?"Switch to light mode":"Switch to dark mode";
+  tb.innerHTML=glyph(d?"sun":"moon");tb.setAttribute("aria-label",label);tb.title=label;
+  tintSwatches();drawPad();drawGame();
+}
+tb.addEventListener("click",function(){
+  var t=isDark()?"light":"dark";root.setAttribute("data-theme",t);
+  try{localStorage.setItem("pt-theme",t)}catch(e){}
+  syncTheme();
+});
+if(window.matchMedia){var mq=matchMedia("(prefers-color-scheme: dark)");if(mq.addEventListener)mq.addEventListener("change",syncTheme);else if(mq.addListener)mq.addListener(syncTheme)}
+window.addEventListener("storage",function(e){
+  if(e.key!=="pt-theme")return;
+  if(e.newValue==="light"||e.newValue==="dark")root.setAttribute("data-theme",e.newValue);else root.removeAttribute("data-theme");
+  syncTheme();
+});
 syncTheme();
 
 var mb=document.getElementById("menuBtn"),nav=document.getElementById("nav");
@@ -1241,7 +1328,7 @@ function renderApp(a){
     '</div>'+
     '<div class="app-cols"><div><p class="app-long">'+esc(a.long||a.desc)+'</p>'+(feats?'<h2>What you can do</h2><ul>'+feats+'</ul>':'')+'</div>'+
     '<aside class="get-box"><h3>'+(web?'Try ':'Get ')+esc(a.name)+'</h3>'+(a.price?'<p class="price">'+esc(a.price)+'</p>':'')+'<div class="acts-col">'+actionsFor(a)+'</div>'+
-    '<dl><dt>Type</dt><dd>'+esc(a.type)+'</dd><dt>Works on</dt><dd>'+esc(a.platform)+'</dd><dt>Version</dt><dd>'+esc(a.version)+'</dd><dt>Size</dt><dd>'+(web?'Nothing to download':esc(a.size))+'</dd></dl><p class="dc-note">Questions or feedback? <a data-discord data-off="Discord link coming soon">Join our Discord</a></p></aside></div>'+
+    '<dl><dt>Type</dt><dd>'+esc(a.type)+'</dd><dt>Works on</dt><dd>'+esc(a.platform)+'</dd><dt>Version</dt><dd>'+esc(a.version)+'</dd><dt>Size</dt><dd>'+(web?'Nothing to download':esc(a.size))+'</dd></dl><p class="dc-note"><span>Questions or feedback? Chat with us on Discord.</span><button class="icon-btn ico dc-btn" type="button" data-discord></button></p></aside></div>'+
     '<h2>More from us</h2><div class="lib-grid">'+others+'</div>';
   initCarousel(appBody.querySelector('.carousel'));
   wireDiscord(appBody);

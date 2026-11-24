@@ -2,7 +2,7 @@
 
 > Working notes kept on the `my-changes` branch only. Never merge this file into `main`.
 > Read this first at the start of every session, and update it whenever a change makes it out of date.
-> Last updated: 24 November 2026 (Netlify branch preview added; no site code changed yet).
+> Last updated: 24 November 2026 (icon theme toggle with saved preference, Discord icons with "coming soon" tooltip).
 
 ---
 
@@ -38,7 +38,7 @@ Contact email used everywhere: `pixelandtech.uk@gmail.com`.
 | Frameworks | **None**. No React, no npm, no `package.json`, no build step |
 | Fonts | Google Fonts: Bricolage Grotesque (headings) and Figtree (body), loaded by `<link>` |
 | Graphics | `<canvas>` (drawing pad, mini game) and inline SVG generated in JS (icons, placeholder screenshots) |
-| Storage | Browser `localStorage` only (game scores and player name) |
+| Storage | Browser `localStorage` only (game scores, player name, light/dark choice) |
 | Hosting | GitHub Pages, deployed from `main` |
 | Special | Optional `window.claude.use('downloads')` hook: only works when the page runs as a Claude artifact; on GitHub Pages those press-kit download buttons stay hidden |
 
@@ -57,7 +57,7 @@ Inside `index.html`, in order:
 
 | Lines (approx.) | Contents |
 |---|---|
-| 1–10 | `<head>`: meta, title, description, Google Fonts |
+| 1–15 | `<head>`: meta, title, description, Google Fonts, tiny inline script that applies the saved theme before paint |
 | 11–470 | `<style>`: design tokens on `:root`, dark mode, then CSS per section (header, hero, ticker, games, cards, services, AI demo, library, process, about, wipe transition, product pages, carousel, loader, tiles, newsletter, leaderboard, policy/press pages, hiring, FAQ, contact, footer, mobile `@media (max-width:900px)`, reduced motion) |
 | 473–505 | Loader, page-wipe overlay, sticky header with nav, Discord, theme and Menu buttons |
 | 507–689 | `<main id="top">` with all home sections: hero + pixel pad, ticker, tiles, `#games`, `#community` (Discord), `#services`, `#ai`, `#software`, `#process`, `#about`, `#hiring`, `#faq`, `#news`, `#contact` |
@@ -97,7 +97,14 @@ It is a **single-page app with hash routing**, no backend.
 - **Forms** (contact, careers, newsletter): no server. On submit they build a `mailto:` link and open the visitor's email app. Nothing is sent unless the visitor presses send.
 - **Pixel Catch game**: canvas game loop with `requestAnimationFrame`; scores saved to `localStorage`.
 - **AI call demo**: plays a scripted fake conversation (`SCRIPT`) message by message. No real AI or phone service.
-- **Theme**: light/dark tokens in CSS; button toggles `data-theme` on `<html>`. Not remembered between visits.
+- **Theme**: light/dark tokens in CSS. With no saved choice, the CSS `prefers-color-scheme` media query follows the device.
+  The sun/moon icon button sets `data-theme` on `<html>` and saves it to `localStorage["pt-theme"]`; an inline script in
+  `<head>` re-applies it before first paint (no flash). The icon shows the mode you'll switch *to* (moon in light, sun in dark).
+  Changes in another tab are picked up via the `storage` event.
+- **Discord**: every Discord control is `<button data-discord>` filled by `wireDiscord()`: a pixel gamepad icon plus a
+  "Discord: coming soon" tooltip (hover, keyboard focus or click/tap; Esc hides it; clicks announce via the `#dcLive`
+  screen-reader region). Places: header (hidden under 360px wide), "Join our Discord" box, footer, product-page side box.
+  When `DISCORD_URL` is set, each button is swapped for a real link that opens in a new tab.
 - **Third parties**: Google Fonts, Gmail (via mailto), Discord (link only), GitHub Pages.
 - **Auth / database / APIs**: none.
 
@@ -110,6 +117,7 @@ It is a **single-page app with hash routing**, no backend.
 | Best score | `localStorage["pt-best"]` | number as string |
 | Top 5 scores | `localStorage["pt-scores"]` | JSON `[{n:name, s:score}]` |
 | Last player name | `localStorage["pt-name"]` | string, max 12 chars |
+| Theme choice | `localStorage["pt-theme"]` | `"light"` or `"dark"`; absent = follow device |
 | Press fact sheet | `FACT_SHEET` string in JS | plain text |
 
 No database. Nothing is stored on a server.
@@ -123,6 +131,7 @@ No database. Nothing is stored on a server.
 - **JS**: ES5 (`var`, `function`, `forEach`), short names, IIFEs for one-off setup, `/* ---- section ---- */` comments, HTML built as strings — always pass user/content text through `esc()`.
 - **New top-level page section**: add a `<section id="...">` inside `<main>`, then add its selector to the right `PAGES` entry and its hash to `ALIAS`, and a nav/footer link if needed.
 - **Copy/wording**: British English, plain friendly language, short sentences, curly apostrophes (’).
+- **Small icons**: draw them as pixel grids in `GLYPHS` and render with `glyph(name)` (SVG in `currentColor`); put them in `.icon-btn.ico` (40×40) buttons with an `aria-label`. Larger decorative icons use `ICONS` / `data-icon`.
 - **Accessibility**: `aria-label`, `aria-pressed`, `aria-current`, `.sr` for screen-reader-only text, `:focus-visible` outlines.
 
 ## 8. Current state, issues and TODOs
@@ -131,7 +140,7 @@ No database. Nothing is stored on a server.
 
 **Unfinished (from TODO.md and code):**
 - All six `APPS` entries are **sample/placeholder** products (Pixel Drift, Block Keeper, Tidy Tasks, CallPilot Demo, Sprite Sizer, Invoice Snap); every `url`, `buyUrl`, `wishlistUrl` is empty, so every button says "Coming soon".
-- `DISCORD_URL` empty.
+- `DISCORD_URL` empty (Discord icons show "coming soon").
 - Forms only open the visitor's email app (no form service). Newsletter is not a real mailing list.
 - AI demo uses a made-up plumber ("Hartley Plumbing", "Sam Patel, Exeter") — odd for a Newcastle studio.
 - No favicon, no social preview (Open Graph) image, one title/description for all "pages".
@@ -141,8 +150,6 @@ No database. Nothing is stored on a server.
 **Inconsistencies / possible bugs:**
 - Software library says "Everything we’ve released, free to download", and the press kit says "free to download", but Pixel Drift is priced £4.99.
 - FAQ says each card shows "how big the file is"; web apps show "Runs in your browser" instead (fine, but wording slightly off).
-- Theme choice is not saved, so it resets on every page load.
-- Header Discord button is hidden under 560px wide.
 - Hash routing means search engines see one page; product pages have no own URL for sharing previews.
 - Press-kit download buttons never appear on GitHub Pages (by design).
 - Loader is hidden twice (CSS at ~1.3s and JS at 1.4s) — harmless duplication.
