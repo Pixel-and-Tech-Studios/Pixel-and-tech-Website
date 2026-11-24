@@ -2,7 +2,7 @@
 
 > Working notes kept on the `my-changes` branch only. Never merge this file into `main`.
 > Read this first at the start of every session, and update it whenever a change makes it out of date.
-> Last updated: 22 November 2026 (first exploration, no code changed).
+> Last updated: 24 November 2026 (Netlify branch preview added; no site code changed yet).
 
 ---
 
@@ -14,7 +14,7 @@
 - Push with `git push -u origin my-changes` (the branch must track `origin/my-changes`, never `origin/main`).
 - No `CLAUDE.md` file.
 - After each pushed change, give the owner the **branch preview link** (not GitHub, not the main site).
-  There is currently **no branch preview** (see section 9), so say so until one is set up.
+  Preview link: https://pixel-and-tech-preview.netlify.app (see section 9). Check it shows the new commit before sharing.
 
 ---
 
@@ -153,11 +153,9 @@ No database. Nothing is stored on a server.
 
 - **Host**: **GitHub Pages**, from the `main` branch (confirmed via the repo's "pages build and deployment" Actions runs).
 - **Expected live URL**: `https://pixel-and-tech-studios.github.io/Pixel-and-tech-Website/` — *not yet confirmed from this environment (outbound network to that host is blocked here); the owner should check under Settings → Pages.*
-- **Branch previews: NOT set up.** GitHub Pages publishes one branch only, so `my-changes` has no preview site.
-- **Simplest way to add previews** (owner action, ~5 minutes, free): connect the repo to **Netlify** (or Vercel / Cloudflare Pages):
-  1. Sign in at netlify.com with GitHub → "Add new site" → "Import an existing project" → pick this repo.
-  2. Branch to deploy: `main`; build command: *empty*; publish directory: `/` (root).
-  3. Site settings → Build & deploy → Branches and deploy contexts → Branch deploys: **All** (or add `my-changes`).
-  4. Each push to `my-changes` then appears at `https://my-changes--<site-name>.netlify.app`.
-  Vercel works similarly: every pushed branch gets a preview URL shown on the commit in GitHub.
-  Note the press-kit download buttons stay hidden on any of these hosts.
+- **Branch preview: set up on Netlify (24 Nov 2026).** Netlify project `pixel-and-tech-preview`, branch to deploy = `my-changes`,
+  no build command, publish directory = repo root. Every push to `my-changes` redeploys
+  **https://pixel-and-tech-preview.netlify.app** (confirmed serving `my-changes`: `details.md` loads there and is not on `main`).
+  Netlify adds a small HTML comment and a script tag to the served page; the repo file is unchanged.
+  Note: files in the repo, including this `details.md`, are publicly reachable at that URL.
+- This session's cloud environment "Pixel-and-tech-Website" allows `pixel-and-tech-preview.netlify.app` so previews can be checked before sharing.
